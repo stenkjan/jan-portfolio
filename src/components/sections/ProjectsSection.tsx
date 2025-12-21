@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from "@/lib/i18n";
-import { projectImages } from "@/lib/blobStorage";
+import { projectImages } from "@/lib/imageStorage";
 
 // Project data with German and English content
 const projects = [
