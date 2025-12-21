@@ -1,12 +1,11 @@
-import { BlobServiceClient } from '@azure/storage-blob';
+// Vercel Blob Storage configuration
+// Images are stored in Vercel Blob Storage under the 'images' folder
+const VERCEL_BLOB_BASE_URL = 'https://1mkowktdsbm6ra0z.public.blob.vercel-storage.com';
 
-// Azure Blob Storage configuration
-const STORAGE_ACCOUNT_NAME = 'janpportfolioblob';
-const CONTAINER_NAME = 'images';
-
-// Generate blob URL without authentication (for public containers)
+// Generate blob URL for Vercel Blob Storage
 export function getBlobUrl(blobName: string): string {
-  return `https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net/${CONTAINER_NAME}/${blobName}`;
+  // Vercel Blob URLs are typically: https://<token>.public.blob.vercel-storage.com/<path>
+  return `${VERCEL_BLOB_BASE_URL}/${blobName}`;
 }
 
 // Project image mappings

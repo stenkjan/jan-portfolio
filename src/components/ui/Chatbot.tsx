@@ -31,6 +31,7 @@ export default function Chatbot() {
       };
       setMessages([welcomeMessage]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, language]);
 
   useEffect(() => {

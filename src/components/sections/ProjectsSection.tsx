@@ -1,36 +1,28 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ExternalLink,
   Github,
+  Code2,
+  Zap,
+  Shield,
+  Users,
+  Database,
+  Globe,
+  Smartphone,
   ArrowRight,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { getProjectImages } from "@/lib/blobStorage";
 import { t } from "@/lib/i18n";
+import { projectImages } from "@/lib/blobStorage";
 
-interface Project {
-  id: string;
-  title: { de: string; en: string };
-  subtitle: { de: string; en: string };
-  category: { de: string; en: string };
-  description: { de: string; en: string };
-  longDescription: { de: string; en: string };
-  technologies: string[];
-  features: { de: string[]; en: string[] };
-  imageLayout: "main-hero" | "grid" | "showcase" | "mobile-feature";
-  demoUrl?: string;
-  githubUrl?: string;
-  projects?: { name: string; url: string }[];
-  priority: number;
-}
-
-const projects: Project[] = [
+// Project data with German and English content
+const projects = [
   {
     id: "nest-haus",
     title: { de: "Da Hoam (Nest-Haus)", en: "Da Hoam (Nest-Haus)" },
@@ -40,12 +32,12 @@ const projects: Project[] = [
     },
     category: { de: "Webanwendung", en: "Web Application" },
     description: {
-      de: "Eine hochmoderne Next.js-Anwendung für Hauskonfiguration und Visualisierung mit interaktivem Konfigurator, dynamischem Preissystem und umfassender Immobilienexploration.",
-      en: "A sophisticated Next.js application for house configuration and visualization with interactive configurator, dynamic pricing system, and comprehensive property exploration.",
+      de: "Eine hochmoderne Next.js-Anwendung für Hauskonfiguration und -visualisierung. Mit interaktivem Konfigurator, dynamischem Preissystem und umfassender Immobiliensuche.",
+      en: "A sophisticated Next.js application for house configuration and visualization. Features an interactive configurator, dynamic pricing system, and comprehensive property exploration.",
     },
     longDescription: {
-      de: "Entwickelt mit Next.js 15, TypeScript und modernen Architekturmustern. Implementiert komplexes State Management, Echtzeit-Konfigurationsupdates und responsives Design für optimale Benutzererfahrung auf allen Geräten. Dieses Projekt zeigt meine Expertise in modernem Web-Design, fortgeschrittenem State Management mit Zustand und skalierbarer Architektur.",
-      en: "Built with Next.js 15, TypeScript, and modern architecture patterns. Implements complex state management, real-time configuration updates, and responsive design for optimal user experience across all devices. This project showcases my expertise in modern web design, advanced state management with Zustand, and scalable architecture.",
+      de: "Entwickelt mit Next.js 15, TypeScript und modernen Architekturmustern. Implementiert komplexes State Management, Echtzeit-Konfigurationsupdates und responsives Design für optimale Benutzererfahrung auf allen Geräten. Zeigt modernste Web-Entwicklungspraktiken und skalierbare Architektur.",
+      en: "Built with Next.js 15, TypeScript, and modern architecture patterns. Implements complex state management, real-time configuration updates, and responsive design for optimal user experience across all devices. Demonstrates cutting-edge web development practices and scalable architecture.",
     },
     technologies: [
       "Next.js 15",
@@ -54,12 +46,13 @@ const projects: Project[] = [
       "Zustand",
       "Prisma",
       "PostgreSQL",
+      "Vercel Blob",
     ],
     features: {
       de: [
         "Interaktiver Hauskonfigurator",
         "Dynamisches Preissystem",
-        "Immobilien-Entdeckungsschnittstelle",
+        "Immobilien-Entdeckungs-Interface",
         "Responsives Design",
         "Echtzeit-Updates",
         "Modernes UI/UX",
@@ -73,29 +66,38 @@ const projects: Project[] = [
         "Modern UI/UX",
       ],
     },
-    imageLayout: "main-hero",
+    highlights: [
+      { icon: Zap, text: { de: "Hochperformante Architektur", en: "High Performance Architecture" } },
+      { icon: Shield, text: { de: "Typ-sichere Entwicklung", en: "Type-Safe Development" } },
+      { icon: Users, text: { de: "Außergewöhnliche UX", en: "Exceptional User Experience" } },
+    ],
+    images: [
+      { url: projectImages.da_hoam_landingpage, alt: "Da Hoam Landing Page", featured: true },
+      { url: projectImages.da_hoam_konfigurator, alt: "Interactive House Configurator", featured: true },
+      { url: projectImages.da_hoam_konzeptcheck, alt: "Concept Check", featured: false },
+      { url: projectImages.da_hoam_warumwir, alt: "Why Us Section", featured: false },
+      { url: projectImages.da_hoam_kontakt, alt: "Contact Section", featured: false },
+    ],
     demoUrl: "https://nest-haus.vercel.app",
     githubUrl: "https://github.com/stenkjan/nest-haus",
+    type: "showcase",
     priority: 1,
   },
   {
     id: "ks-database",
-    title: {
-      de: "SSC Railtec Produktdatenbank",
-      en: "SSC Railtec Product Database",
-    },
+    title: { de: "SSC Railtec Produktdatenbank", en: "SSC Railtec Product Database" },
     subtitle: {
-      de: "Enterprise-Produktmanagementsystem",
+      de: "Enterprise Produktverwaltungssystem",
       en: "Enterprise Product Management System",
     },
-    category: { de: "Full-Stack-Anwendung", en: "Full-Stack Application" },
+    category: { de: "Full-Stack Anwendung", en: "Full-Stack Application" },
     description: {
       de: "Ein umfassendes Produktdatenbank-Managementsystem mit erweiterten Konfigurationsmöglichkeiten, Admin-Dashboard und skalierbarer Architektur.",
       en: "A comprehensive product database management system with advanced configuration capabilities, admin dashboard, and scalable architecture.",
     },
     longDescription: {
-      de: "Entwickelt für Skalierbarkeit und Wartbarkeit zeigt dieses System Prinzipien sauberer Architektur, effizientes Datenbankdesign und intuitive Benutzeroberflächen. Das System umfasst Authentifizierung, Produktregistrierung, Konfigurationsverwaltung und umfassende Administrationswerkzeuge.",
-      en: "Designed for scalability and maintainability, this system showcases clean architecture principles, efficient database design, and intuitive user interfaces. The system includes authentication, product registration, configuration management, and comprehensive administration tools.",
+      de: "Entworfen für Skalierbarkeit und Wartbarkeit, demonstriert dieses System Clean-Architecture-Prinzipien, effizientes Datenbankdesign und intuitive Benutzeroberflächen. Entwickelt mit modernen Tools für optimale Teamzusammenarbeit und langfristige Wartung.",
+      en: "Designed for scalability and maintainability, this system showcases clean architecture principles, efficient database design, and intuitive user interfaces. Built with modern tools for optimal team collaboration and long-term maintenance.",
     },
     technologies: [
       "React",
@@ -107,344 +109,206 @@ const projects: Project[] = [
     ],
     features: {
       de: [
-        "Benutzerauthentifizierung",
-        "Produktregistrierung & -verwaltung",
-        "Konfigurationssystem",
-        "Admin-Dashboard",
+        "Produktkonfigurationsverwaltung",
+        "Admin Dashboard",
         "Erweiterte Suche & Filterung",
         "Datenvisualisierung",
+        "Benutzerverwaltung",
+        "API-Integration",
       ],
       en: [
-        "User Authentication",
-        "Product Registration & Management",
-        "Configuration System",
+        "Product Configuration Management",
         "Admin Dashboard",
         "Advanced Search & Filtering",
         "Data Visualization",
+        "User Role Management",
+        "API Integration",
       ],
     },
-    imageLayout: "showcase",
+    highlights: [
+      { icon: Database, text: { de: "Skalierbares Datenbankdesign", en: "Scalable Database Design" } },
+      { icon: Code2, text: { de: "Clean Architecture", en: "Clean Architecture" } },
+      { icon: Users, text: { de: "Teamfreundliche Codebasis", en: "Team-Friendly Codebase" } },
+    ],
+    images: [
+      { url: projectImages.produktdatenbank_produkt, alt: "Product Registration Form", featured: true },
+      { url: projectImages.produktdatenbank_konfigurationen, alt: "Configuration Management", featured: false },
+      { url: projectImages.produktdatenbank_verwaltung, alt: "Admin Panel", featured: false },
+      { url: projectImages.produktdatenbank_signing, alt: "Authentication", featured: false },
+    ],
     demoUrl: "https://produktdatenbank-298f60a21e50.herokuapp.com",
+    githubUrl: "https://github.com/stenkjan/ks-database",
+    type: "showcase",
     priority: 2,
   },
   {
     id: "fusspflege-app",
-    title: {
-      de: "Fußpflege Kundenverwaltung",
-      en: "Foot Care Patient Management",
-    },
+    title: { de: "Fußpflege Kundenverwaltung", en: "Foot Care Patient Management" },
     subtitle: {
-      de: "Mobile Patientenverwaltungs-App",
-      en: "Mobile Patient Management App",
+      de: "Flutter Patienten-Management-App",
+      en: "Flutter Patient Management App",
     },
-    category: { de: "Flutter Mobile App", en: "Flutter Mobile App" },
+    category: { de: "Mobile Entwicklung", en: "Mobile Development" },
     description: {
-      de: "Eine professionelle Flutter-App für Patientenregistrierung und -verwaltung. Enthält umfassende Kundenliste, Teilen-Funktion für Datenexport und benutzerfreundliches Registrierungsformular.",
-      en: "A professional Flutter app for patient registration and management. Features comprehensive customer list, sharing functionality for data export, and user-friendly registration form.",
+      de: "Eine professionelle Flutter-App für Patientenregistrierung und -verwaltung in der Fußpflege. Enthält Kundenliste, Datenaustausch und Registrierungsformular.",
+      en: "A professional Flutter app for patient registration and management in foot care. Includes customer list, data sharing, and registration form.",
     },
     longDescription: {
-      de: "Diese Flutter-App demonstriert Cross-Platform-Entwicklungsexpertise mit nativem Look & Feel. Die App verwendet moderne Flutter-Widgets und State Management für eine flüssige Benutzererfahrung. Perfekt für kleine Praxen zur Verwaltung ihrer Kundendaten mit Offline-First-Ansatz.",
-      en: "This Flutter app demonstrates cross-platform development expertise with native look & feel. The app uses modern Flutter widgets and state management for a smooth user experience. Perfect for small practices to manage their customer data with an offline-first approach.",
+      de: "Entwickelt mit Flutter für native Performance auf iOS und Android. Demonstriert moderne mobile UI/UX-Patterns, sichere Datenverwaltung und intuitive Bedienung für medizinisches Personal.",
+      en: "Built with Flutter for native performance on iOS and Android. Demonstrates modern mobile UI/UX patterns, secure data management, and intuitive operation for medical staff.",
     },
-    technologies: [
-      "Flutter",
-      "Dart",
-      "SQLite",
-      "Provider State Management",
-      "Material Design",
-    ],
+    technologies: ["Flutter", "Dart", "Mobile UI/UX", "Local Storage", "Cross-Platform"],
     features: {
       de: [
         "Kundenliste mit Suchfunktion",
+        "Datenaustausch zwischen Geräten",
         "Patientenregistrierung",
-        "Datenexport & Teilen",
-        "Offline-First Architektur",
         "Sichere Datenverwaltung",
-        "Modernes UI Design",
+        "Offline-Fähigkeiten",
+        "Native Performance",
       ],
       en: [
         "Customer List with Search",
+        "Data Sharing Between Devices",
         "Patient Registration",
-        "Data Export & Sharing",
-        "Offline-First Architecture",
         "Secure Data Management",
-        "Modern UI Design",
+        "Offline Capabilities",
+        "Native Performance",
       ],
     },
-    imageLayout: "mobile-feature",
+    highlights: [
+      { icon: Smartphone, text: { de: "Cross-Platform Exzellenz", en: "Cross-Platform Excellence" } },
+      { icon: Zap, text: { de: "Native Performance", en: "Native Performance" } },
+      { icon: Shield, text: { de: "Sichere Datenverwaltung", en: "Secure Data Management" } },
+    ],
+    images: [
+      { url: projectImages.fusspflege_kundenliste, alt: "Customer List View", featured: true },
+      { url: projectImages.fusspflege_teilen, alt: "Data Sharing", featured: false },
+      { url: projectImages.fusspflege_registrierung, alt: "Registration Form", featured: false },
+    ],
+    githubUrl: "https://github.com/stenkjan/fuesse_und_fusspflege_cw",
+    type: "showcase",
     priority: 3,
   },
   {
     id: "longcovid-app",
     title: { de: "Long COVID Tracking App", en: "Long COVID Tracking App" },
     subtitle: {
-      de: "Medizinische Symptomverfolgung",
-      en: "Medical Symptom Tracking",
+      de: "Medizinische Flutter-App (Masterarbeit)",
+      en: "Medical Flutter App (Master's Thesis)",
     },
-    category: { de: "Flutter Mobile App", en: "Flutter Mobile App" },
+    category: { de: "Mobile Entwicklung", en: "Mobile Development" },
     description: {
-      de: "Eine Flutter-App zur Verfolgung und Verwaltung von Long-COVID-Symptomen, entwickelt als Teil meiner Masterarbeit. Bietet umfassende Funktionen für medizinische Dokumentation und Patientenverwaltung.",
-      en: "A Flutter app for tracking and managing Long COVID symptoms, developed as part of my master's thesis. Provides comprehensive features for medical documentation and patient management.",
+      de: "Eine Flutter-App zur Verfolgung und Verwaltung von Long-COVID-Symptomen, entwickelt als Teil meiner Masterarbeit. Bietet umfassende Symptomverfolgung und medizinische Dokumentation.",
+      en: "A Flutter app for tracking and managing Long COVID symptoms, developed as part of my master's thesis. Provides comprehensive symptom tracking and medical documentation.",
     },
     longDescription: {
-      de: "Diese App wurde im Rahmen meiner Masterarbeit entwickelt und zeigt meine Fähigkeit, komplexe medizinische Anwendungen zu erstellen. Sie umfasst Symptomverfolgung, Datenvisualisierung und sichere Datenverwaltung für medizinische Zwecke.",
-      en: "This app was developed as part of my master's thesis and demonstrates my ability to create complex medical applications. It includes symptom tracking, data visualization, and secure data management for medical purposes.",
+      de: "Diese App wurde im Rahmen meiner Masterarbeit entwickelt und demonstriert die Anwendung moderner Mobile-Technologien im medizinischen Bereich. Fokus auf Benutzerfreundlichkeit und Datenschutz.",
+      en: "This app was developed as part of my master's thesis and demonstrates the application of modern mobile technologies in the medical field. Focus on user-friendliness and data privacy.",
     },
-    technologies: [
-      "Flutter",
-      "Dart",
-      "Firebase",
-      "Charts & Visualization",
-      "Healthcare Standards",
-    ],
+    technologies: ["Flutter", "Dart", "Medical Data", "Data Visualization", "Privacy-First"],
     features: {
       de: [
         "Symptomverfolgung",
         "Datenvisualisierung",
         "Patientenverwaltung",
         "Medizinische Dokumentation",
-        "Sichere Datenspeicherung",
-        "Export-Funktionen",
+        "Datenschutz-konform",
+        "Benutzerfreundliches Interface",
       ],
       en: [
         "Symptom Tracking",
         "Data Visualization",
         "Patient Management",
         "Medical Documentation",
-        "Secure Data Storage",
-        "Export Functions",
+        "Privacy Compliant",
+        "User-Friendly Interface",
       ],
     },
-    imageLayout: "showcase",
+    highlights: [
+      { icon: Smartphone, text: { de: "Medizinische Präzision", en: "Medical Precision" } },
+      { icon: Shield, text: { de: "Datenschutz-konform", en: "Privacy Compliant" } },
+      { icon: Users, text: { de: "Patient-orientiert", en: "Patient-Oriented" } },
+    ],
+    images: [
+      { url: projectImages.masterarbeit_longcovidapp, alt: "Long COVID App Overview", featured: true },
+    ],
+    githubUrl: "https://github.com/stenkjan/covidapp",
+    type: "showcase",
     priority: 4,
   },
   {
     id: "ntgl-events",
-    title: {
-      de: "NTGL Event-Registrierung",
-      en: "NTGL Event Registration",
-    },
+    title: { de: "NTGL Event-Registrierung", en: "NTGL Event Registration" },
     subtitle: {
-      de: "Event-Management-Website",
-      en: "Event Management Website",
+      de: "Next.js Event-Plattform",
+      en: "Next.js Event Platform",
     },
-    category: { de: "Next.js Webanwendung", en: "Next.js Web Application" },
+    category: { de: "Webanwendung", en: "Web Application" },
     description: {
-      de: "Eine Next.js Event-Registrierungswebsite mit Flyer-Anzeige, Event-Vorschau und benutzerfreundlichem Registrierungsformular. Optimiert für schnelle Ladezeiten und mobile Geräte.",
-      en: "A Next.js event registration website with flyer display, event preview, and user-friendly registration form. Optimized for fast loading times and mobile devices.",
+      de: "Eine moderne Next.js Event-Registrierungswebsite mit Flyer-Anzeige, Event-Vorschau und Registrierungsformular. Optimiert für schnelle Einrichtung und einfache Verwaltung.",
+      en: "A modern Next.js event registration website with flyer display, event preview, and registration form. Optimized for quick setup and easy management.",
     },
     longDescription: {
-      de: "Diese Website zeigt, wie kleine Unternehmen und Teams schnell professionelle Event-Registrierungssysteme einsetzen können. Bietet anpassbare Registrierungsformulare, Teilnehmerverwaltung und responsives Design - perfekt für Unternehmen, die effizientes Event-Management ohne komplexe Einrichtung benötigen.",
-      en: "This website demonstrates how small businesses and teams can quickly deploy professional event registration systems. Features customizable registration forms, participant management, and responsive design - perfect for companies needing efficient event management without complex setup.",
+      de: "Diese Plattform demonstriert, wie kleine Organisationen schnell professionelle Event-Registrierungssysteme einsetzen können. Jede Lösung bietet anpassbare Registrierungsformulare und responsives Design.",
+      en: "This platform demonstrates how small organizations can quickly deploy professional event registration systems. Each solution provides customizable registration forms and responsive design.",
     },
-    technologies: [
-      "Next.js",
-      "React",
-      "TypeScript",
-      "Tailwind CSS",
-      "Form Handling",
-    ],
+    technologies: ["React", "Next.js", "TypeScript", "Netlify", "Form Handling"],
     features: {
       de: [
         "Schnelle Event-Einrichtung",
         "Benutzerdefinierte Formulare",
-        "Flyer-Integration",
         "Teilnehmerverwaltung",
         "Mobiles Design",
-        "SEO-optimiert",
+        "Einfache Bereitstellung",
+        "Kleine Teams optimiert",
       ],
       en: [
         "Quick Event Setup",
-        "Custom Forms",
-        "Flyer Integration",
+        "Custom Registration Forms",
         "Participant Management",
-        "Mobile Design",
-        "SEO Optimized",
+        "Mobile-Friendly Design",
+        "Easy Deployment",
+        "Small Team Optimized",
       ],
     },
-    imageLayout: "showcase",
+    highlights: [
+      { icon: Zap, text: { de: "Schnelle Bereitstellung", en: "Rapid Deployment" } },
+      { icon: Users, text: { de: "Kleine Teams optimiert", en: "Small Team Optimized" } },
+      { icon: Globe, text: { de: "Professionelle Ergebnisse", en: "Professional Results" } },
+    ],
+    images: [
+      { url: projectImages.ntgl_eventseite, alt: "NTGL Event Website", featured: true },
+    ],
+    githubUrl: "https://github.com/stenkjan/ntgl-events",
+    type: "showcase",
     priority: 5,
   },
 ];
 
 export default function ProjectsSection() {
   const [activeProject, setActiveProject] = useState(projects[0].id);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imageIndex, setImageIndex] = useState<Record<string, number>>({});
   const { language } = useLanguage();
 
-  const activeProjectData =
-    projects.find((p) => p.id === activeProject) || projects[0];
+  const activeProjectData = projects.find((p) => p.id === activeProject) || projects[0];
 
-  const projectImages = getProjectImages(activeProject);
-
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % projectImages.length);
+  const handleNextImage = (projectId: string, maxIndex: number) => {
+    setImageIndex((prev) => ({
+      ...prev,
+      [projectId]: ((prev[projectId] || 0) + 1) % maxIndex,
+    }));
   };
 
-  const prevImage = () => {
-    setCurrentImageIndex(
-      (prev) => (prev - 1 + projectImages.length) % projectImages.length
-    );
+  const handlePrevImage = (projectId: string, maxIndex: number) => {
+    setImageIndex((prev) => ({
+      ...prev,
+      [projectId]: ((prev[projectId] || 0) - 1 + maxIndex) % maxIndex,
+    }));
   };
 
-  const renderImageGallery = () => {
-    if (projectImages.length === 0) {
-      return (
-        <div className="bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg p-8 h-full flex items-center justify-center">
-          <p className="text-gray-600 text-center">
-            {language === "de"
-              ? "Bilder werden bald verfügbar sein"
-              : "Images coming soon"}
-          </p>
-        </div>
-      );
-    }
-
-    switch (activeProjectData.imageLayout) {
-      case "main-hero":
-        // Da Hoam: Main landing page at top, grid of 4 images below
-        return (
-          <div className="space-y-4">
-            {/* Main Hero Image */}
-            <div className="relative h-96 rounded-lg overflow-hidden shadow-lg">
-              <Image
-                src={projectImages[0]}
-                alt={`${activeProjectData.title[language]} - Landingpage`}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </div>
-            {/* Grid of 4 images */}
-            {projectImages.length > 1 && (
-              <div className="grid grid-cols-2 gap-4">
-                {projectImages.slice(1, 5).map((img, idx) => (
-                  <div
-                    key={idx}
-                    className="relative h-48 rounded-lg overflow-hidden shadow-md"
-                  >
-                    <Image
-                      src={img}
-                      alt={`${activeProjectData.title[language]} - Feature ${idx + 1}`}
-                      fill
-                      className="object-cover hover:scale-105 transition-transform duration-300"
-                      sizes="(max-width: 768px) 50vw, 25vw"
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        );
-
-      case "showcase":
-        // SSC Railtec: Main product screenshot, then smaller detail windows
-        return (
-          <div className="space-y-4">
-            {/* Main Screenshot with menu bar */}
-            <div className="relative h-96 rounded-lg overflow-hidden shadow-lg border-2 border-gray-200">
-              <Image
-                src={projectImages[0]}
-                alt={`${activeProjectData.title[language]} - Hauptansicht`}
-                fill
-                className="object-contain bg-white"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </div>
-            {/* Smaller detail windows */}
-            {projectImages.length > 1 && (
-              <div className="grid grid-cols-3 gap-3">
-                {projectImages.slice(1).map((img, idx) => (
-                  <div
-                    key={idx}
-                    className="relative h-32 rounded-lg overflow-hidden shadow-md border border-gray-200"
-                  >
-                    <Image
-                      src={img}
-                      alt={`${activeProjectData.title[language]} - Detail ${idx + 1}`}
-                      fill
-                      className="object-contain bg-gray-50 hover:scale-105 transition-transform duration-300"
-                      sizes="(max-width: 768px) 33vw, 16vw"
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        );
-
-      case "mobile-feature":
-        // Fusspflege: Mobile screenshots in phone frames
-        return (
-          <div className="flex justify-center items-center space-x-4">
-            {projectImages.slice(0, 3).map((img, idx) => (
-              <div key={idx} className="relative">
-                {/* Phone frame */}
-                <div className="relative w-48 h-96 bg-gray-900 rounded-3xl p-2 shadow-2xl">
-                  <div className="relative w-full h-full rounded-2xl overflow-hidden">
-                    <Image
-                      src={img}
-                      alt={`${activeProjectData.title[language]} - Screen ${idx + 1}`}
-                      fill
-                      className="object-cover"
-                      sizes="192px"
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        );
-
-      default:
-        // Carousel for other projects
-        return (
-          <div className="relative">
-            <div className="relative h-96 rounded-lg overflow-hidden shadow-lg">
-              <Image
-                src={projectImages[currentImageIndex]}
-                alt={`${activeProjectData.title[language]} - Image ${currentImageIndex + 1}`}
-                fill
-                className="object-contain bg-gray-100"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </div>
-            {projectImages.length > 1 && (
-              <>
-                <button
-                  onClick={prevImage}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 rounded-full shadow-lg transition-all"
-                  aria-label="Previous image"
-                >
-                  <ChevronLeft className="h-6 w-6" />
-                </button>
-                <button
-                  onClick={nextImage}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 rounded-full shadow-lg transition-all"
-                  aria-label="Next image"
-                >
-                  <ChevronRight className="h-6 w-6" />
-                </button>
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-                  {projectImages.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrentImageIndex(idx)}
-                      className={`w-2 h-2 rounded-full transition-all ${
-                        idx === currentImageIndex
-                          ? "bg-white w-6"
-                          : "bg-white/50"
-                      }`}
-                      aria-label={`Go to image ${idx + 1}`}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-        );
-    }
-  };
+  const currentImageIndex = imageIndex[activeProject] || 0;
+  const currentImage = activeProjectData.images[currentImageIndex];
 
   return (
     <section id="projects" className="py-20 bg-gray-50">
@@ -461,24 +325,19 @@ export default function ProjectsSection() {
 
         {/* Project Navigation */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {projects
-            .sort((a, b) => a.priority - b.priority)
-            .map((project) => (
-              <button
-                key={project.id}
-                onClick={() => {
-                  setActiveProject(project.id);
-                  setCurrentImageIndex(0);
-                }}
-                className={`px-6 py-3 rounded-full font-medium transition-all duration-200 ${
-                  activeProject === project.id
-                    ? "bg-blue-600 text-white shadow-lg scale-105"
-                    : "bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 border border-gray-200"
-                }`}
-              >
-                {project.title[language]}
-              </button>
-            ))}
+          {projects.map((project) => (
+            <button
+              key={project.id}
+              onClick={() => setActiveProject(project.id)}
+              className={`px-6 py-3 rounded-full font-medium transition-all duration-200 ${
+                activeProject === project.id
+                  ? "bg-blue-600 text-white shadow-lg"
+                  : "bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 border border-gray-200"
+              }`}
+            >
+              {project.title[language]}
+            </button>
+          ))}
         </div>
 
         {/* Active Project Display */}
@@ -499,6 +358,26 @@ export default function ProjectsSection() {
                 <p className="text-gray-600 mb-6 leading-relaxed">
                   {activeProjectData.longDescription[language]}
                 </p>
+              </div>
+
+              {/* Key Highlights */}
+              <div className="mb-8">
+                <h4 className="text-lg font-semibold text-gray-900 mb-4">
+                  {t("projects.highlights", language)}
+                </h4>
+                <div className="space-y-3">
+                  {activeProjectData.highlights.map((highlight, index) => {
+                    const IconComponent = highlight.icon;
+                    return (
+                      <div key={index} className="flex items-center space-x-3">
+                        <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                          <IconComponent className="h-4 w-4 text-blue-600" />
+                        </div>
+                        <span className="text-gray-700">{highlight.text[language]}</span>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
 
               {/* Technologies */}
@@ -526,7 +405,7 @@ export default function ProjectsSection() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {activeProjectData.features[language].map((feature, index) => (
                     <div key={index} className="flex items-center space-x-2">
-                      <div className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0"></div>
+                      <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
                       <span className="text-gray-700 text-sm">{feature}</span>
                     </div>
                   ))}
@@ -558,28 +437,66 @@ export default function ProjectsSection() {
                     <span>{t("projects.viewCode", language)}</span>
                   </a>
                 )}
-                {activeProjectData.projects && (
-                  <div className="flex flex-wrap gap-2 w-full">
-                    {activeProjectData.projects.map((proj, index) => (
-                      <a
-                        key={index}
-                        href={proj.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors text-sm"
-                      >
-                        <Github className="mr-2 h-3 w-3" />
-                        <span>{proj.name}</span>
-                      </a>
-                    ))}
-                  </div>
-                )}
               </div>
             </div>
 
-            {/* Project Visual */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-8 lg:p-12 order-1 lg:order-2">
-              {renderImageGallery()}
+            {/* Project Visual with Image Carousel */}
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-8 lg:p-12 flex items-center justify-center order-1 lg:order-2 relative">
+              <div className="w-full max-w-lg relative">
+                {/* Image Display */}
+                <div className="bg-white rounded-lg shadow-2xl overflow-hidden relative aspect-video">
+                  <Image
+                    src={currentImage.url}
+                    alt={currentImage.alt}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority={activeProjectData.priority === 1}
+                  />
+                </div>
+
+                {/* Image Navigation */}
+                {activeProjectData.images.length > 1 && (
+                  <>
+                    <button
+                      onClick={() =>
+                        handlePrevImage(activeProject, activeProjectData.images.length)
+                      }
+                      className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-colors"
+                      aria-label="Previous image"
+                    >
+                      <ChevronLeft className="h-6 w-6 text-gray-800" />
+                    </button>
+                    <button
+                      onClick={() =>
+                        handleNextImage(activeProject, activeProjectData.images.length)
+                      }
+                      className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-colors"
+                      aria-label="Next image"
+                    >
+                      <ChevronRight className="h-6 w-6 text-gray-800" />
+                    </button>
+
+                    {/* Image Indicators */}
+                    <div className="flex justify-center mt-4 space-x-2">
+                      {activeProjectData.images.map((_, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() =>
+                            setImageIndex((prev) => ({ ...prev, [activeProject]: idx }))
+                          }
+                          className={`w-2 h-2 rounded-full transition-all ${
+                            idx === currentImageIndex
+                              ? "bg-blue-600 w-8"
+                              : "bg-gray-300 hover:bg-gray-400"
+                          }`}
+                          aria-label={`Go to image ${idx + 1}`}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
