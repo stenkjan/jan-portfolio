@@ -1,6 +1,36 @@
 {
   "version": 3,
   "middleware": {},
-  "functions": {},
+  "functions": {
+    "/api/contact/route": {
+      "files": [
+        "server/server-reference-manifest.js",
+        "server/app/api/contact/route_client-reference-manifest.js",
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "server/interception-route-rewrite-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/app/api/contact/route.js"
+      ],
+      "name": "app/api/contact/route",
+      "page": "/api/contact/route",
+      "matchers": [
+        {
+          "regexp": "^/api/contact$",
+          "originalSource": "/api/contact"
+        }
+      ],
+      "wasm": [],
+      "assets": [],
+      "env": {
+        "__NEXT_BUILD_ID": "lCWbdK9Jouk2_q7MCur7N",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "XHsdlC3iConBMLNzMv1HDIjskgvupz/cv0LfLp0fA5Q=",
+        "__NEXT_PREVIEW_MODE_ID": "7735cec87dcc0a3a40a56ffafe422bb3",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "bb6074db108a4ed22f4c2a8e3f8d4a4f78d32c49670ea2624ef0885284f285fa",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "007a1330f9b3ddb6e418a6e171656f739530410289af0395d7c71600c9d06daf"
+      }
+    }
+  },
   "sortedMiddleware": []
 }
