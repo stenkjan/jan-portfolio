@@ -1,0 +1,14 @@
+.vercel
+.env*.local
+/node_modules
+Lebens
+.gitignore
+public/content/Lebenslauf_Stenk_Jan.pdf
+public/content/screencapture-eule-grngr raveregistrierung-netlify-app-2025-09-06-13_10_47.pdf
+public/content/screencapture-landingpage-nest-haus-vercel-app-2025-09-06-13_05_36.pdf
+public/content/screencapture-nest-haus-vercel-app-entdecken-2025-09-06-13_06_17.pdf
+public/content/screencapture-produktdatenbank-298f60a21e50-herokuapp-configurations-2025-09-06-13_04_30.pdf
+public/content/screencapture-produktdatenbank-298f60a21e50-herokuapp-admin-2025-09-06-13_05_08.pdf
+public/content/screencapture-produktdatenbank-298f60a21e50-herokuapp-dashboard-2025-09-06-13_04_17.pdf
+public/content/Screenshot Konfigurator nest-haus.png
+public/content/Masterpresentation covidapp.pptx
