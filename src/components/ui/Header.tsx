@@ -1,16 +1,11 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, Github, Linkedin, ExternalLink } from "lucide-react";
-
-const navigation = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Projects", href: "#projects" },
-  { name: "Skills", href: "#skills" },
-  { name: "Contact", href: "#contact" },
-];
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/lib/i18n";
 
 const socialLinks = [
   {
@@ -30,6 +25,15 @@ const socialLinks = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { language } = useLanguage();
+
+  const navigation = [
+    { name: t("nav.home", language), href: "#home" },
+    { name: t("nav.about", language), href: "#about" },
+    { name: t("nav.projects", language), href: "#projects" },
+    { name: t("nav.skills", language), href: "#skills" },
+    { name: t("nav.contact", language), href: "#contact" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -78,6 +82,7 @@ export default function Header() {
 
           {/* Social Links & CTA */}
           <div className="hidden md:flex items-center space-x-4">
+            <LanguageSwitcher />
             {socialLinks.map((social) => {
               const IconComponent = social.icon;
               return (
@@ -97,7 +102,7 @@ export default function Header() {
               href="#contact"
               className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-1"
             >
-              <span>Get in Touch</span>
+              <span>{t("nav.getInTouch", language)}</span>
               <ExternalLink className="h-4 w-4" />
             </Link>
           </div>
@@ -135,6 +140,9 @@ export default function Header() {
                 </Link>
               ))}
               <div className="pt-4 pb-3 border-t border-gray-200">
+                <div className="px-3 mb-3">
+                  <LanguageSwitcher />
+                </div>
                 <div className="flex items-center space-x-4 px-3">
                   {socialLinks.map((social) => {
                     const IconComponent = social.icon;
@@ -158,7 +166,7 @@ export default function Header() {
                     onClick={() => setMobileMenuOpen(false)}
                     className="bg-blue-600 text-white block w-full px-4 py-2 rounded-lg text-center text-sm font-medium hover:bg-blue-700 transition-colors"
                   >
-                    Get in Touch
+                    {t("nav.getInTouch", language)}
                   </Link>
                 </div>
               </div>

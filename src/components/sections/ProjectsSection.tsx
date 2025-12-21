@@ -1,30 +1,52 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
   ExternalLink,
   Github,
-  Database,
-  Globe,
-  Smartphone,
-  Users,
   ArrowRight,
-  Code2,
-  Zap,
-  Shield,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { getProjectImages } from "@/lib/blobStorage";
+import { t } from "@/lib/i18n";
 
-const projects = [
+interface Project {
+  id: string;
+  title: { de: string; en: string };
+  subtitle: { de: string; en: string };
+  category: { de: string; en: string };
+  description: { de: string; en: string };
+  longDescription: { de: string; en: string };
+  technologies: string[];
+  features: { de: string[]; en: string[] };
+  imageLayout: "main-hero" | "grid" | "showcase" | "mobile-feature";
+  demoUrl?: string;
+  githubUrl?: string;
+  projects?: { name: string; url: string }[];
+  priority: number;
+}
+
+const projects: Project[] = [
   {
     id: "nest-haus",
-    title: "Nest-Haus",
-    subtitle: "Modern House Configuration Platform",
-    category: "Web Application",
-    description:
-      "A sophisticated Next.js application for house configuration and visualization. Features an interactive configurator, dynamic pricing system, and comprehensive property exploration.",
-    longDescription:
-      "Built with Next.js 15, TypeScript, and modern architecture patterns. Implements complex state management, real-time configuration updates, and responsive design for optimal user experience across all devices.",
+    title: { de: "Da Hoam (Nest-Haus)", en: "Da Hoam (Nest-Haus)" },
+    subtitle: {
+      de: "Moderne Hauskonfigurations-Plattform",
+      en: "Modern House Configuration Platform",
+    },
+    category: { de: "Webanwendung", en: "Web Application" },
+    description: {
+      de: "Eine hochmoderne Next.js-Anwendung für Hauskonfiguration und Visualisierung mit interaktivem Konfigurator, dynamischem Preissystem und umfassender Immobilienexploration.",
+      en: "A sophisticated Next.js application for house configuration and visualization with interactive configurator, dynamic pricing system, and comprehensive property exploration.",
+    },
+    longDescription: {
+      de: "Entwickelt mit Next.js 15, TypeScript und modernen Architekturmustern. Implementiert komplexes State Management, Echtzeit-Konfigurationsupdates und responsives Design für optimale Benutzererfahrung auf allen Geräten. Dieses Projekt zeigt meine Expertise in modernem Web-Design, fortgeschrittenem State Management mit Zustand und skalierbarer Architektur.",
+      en: "Built with Next.js 15, TypeScript, and modern architecture patterns. Implements complex state management, real-time configuration updates, and responsive design for optimal user experience across all devices. This project showcases my expertise in modern web design, advanced state management with Zustand, and scalable architecture.",
+    },
     technologies: [
       "Next.js 15",
       "TypeScript",
@@ -33,38 +55,48 @@ const projects = [
       "Prisma",
       "PostgreSQL",
     ],
-    features: [
-      "Interactive House Configurator",
-      "Dynamic Pricing System",
-      "Property Discovery Interface",
-      "Responsive Design",
-      "Real-time Updates",
-      "Modern UI/UX",
-    ],
-    highlights: [
-      { icon: Zap, text: "High Performance Architecture" },
-      { icon: Shield, text: "Type-Safe Development" },
-      { icon: Users, text: "Exceptional User Experience" },
-    ],
-    images: [
-      "/content/screencapture-landingpage-nest-haus-vercel-app-2025-09-06-13_05_36.pdf",
-      "/content/Screenshot Konfigurator nest-haus.png",
-      "/content/screencapture-nest-haus-vercel-app-entdecken-2025-09-06-13_06_17.pdf",
-    ],
+    features: {
+      de: [
+        "Interaktiver Hauskonfigurator",
+        "Dynamisches Preissystem",
+        "Immobilien-Entdeckungsschnittstelle",
+        "Responsives Design",
+        "Echtzeit-Updates",
+        "Modernes UI/UX",
+      ],
+      en: [
+        "Interactive House Configurator",
+        "Dynamic Pricing System",
+        "Property Discovery Interface",
+        "Responsive Design",
+        "Real-time Updates",
+        "Modern UI/UX",
+      ],
+    },
+    imageLayout: "main-hero",
     demoUrl: "https://nest-haus.vercel.app",
     githubUrl: "https://github.com/stenkjan/nest-haus",
-    type: "showcase",
     priority: 1,
   },
   {
     id: "ks-database",
-    title: "KS-Database",
-    subtitle: "Enterprise Product Management System",
-    category: "Full-Stack Application",
-    description:
-      "A comprehensive product database management system with advanced configuration capabilities, admin dashboard, and scalable architecture.",
-    longDescription:
-      "Designed for scalability and maintainability, this system showcases clean architecture principles, efficient database design, and intuitive user interfaces. Built with modern tools for optimal team collaboration and long-term maintenance.",
+    title: {
+      de: "SSC Railtec Produktdatenbank",
+      en: "SSC Railtec Product Database",
+    },
+    subtitle: {
+      de: "Enterprise-Produktmanagementsystem",
+      en: "Enterprise Product Management System",
+    },
+    category: { de: "Full-Stack-Anwendung", en: "Full-Stack Application" },
+    description: {
+      de: "Ein umfassendes Produktdatenbank-Managementsystem mit erweiterten Konfigurationsmöglichkeiten, Admin-Dashboard und skalierbarer Architektur.",
+      en: "A comprehensive product database management system with advanced configuration capabilities, admin dashboard, and scalable architecture.",
+    },
+    longDescription: {
+      de: "Entwickelt für Skalierbarkeit und Wartbarkeit zeigt dieses System Prinzipien sauberer Architektur, effizientes Datenbankdesign und intuitive Benutzeroberflächen. Das System umfasst Authentifizierung, Produktregistrierung, Konfigurationsverwaltung und umfassende Administrationswerkzeuge.",
+      en: "Designed for scalability and maintainability, this system showcases clean architecture principles, efficient database design, and intuitive user interfaces. The system includes authentication, product registration, configuration management, and comprehensive administration tools.",
+    },
     technologies: [
       "React",
       "Node.js",
@@ -73,116 +105,346 @@ const projects = [
       "Material-UI",
       "RESTful APIs",
     ],
-    features: [
-      "Product Configuration Management",
-      "Admin Dashboard",
-      "Advanced Search & Filtering",
-      "Data Visualization",
-      "User Role Management",
-      "API Integration",
-    ],
-    highlights: [
-      { icon: Database, text: "Scalable Database Design" },
-      { icon: Code2, text: "Clean Architecture" },
-      { icon: Users, text: "Team-Friendly Codebase" },
-    ],
-    images: [
-      "/content/screencapture-produktdatenbank-298f60a21e50-herokuapp-dashboard-2025-09-06-13_04_17.pdf",
-      "/content/screencapture-produktdatenbank-298f60a21e50-herokuapp-configurations-2025-09-06-13_04_30.pdf",
-      "/content/screencapture-produktdatenbank-298f60a21e50-herokuapp-admin-2025-09-06-13_05_08.pdf",
-    ],
+    features: {
+      de: [
+        "Benutzerauthentifizierung",
+        "Produktregistrierung & -verwaltung",
+        "Konfigurationssystem",
+        "Admin-Dashboard",
+        "Erweiterte Suche & Filterung",
+        "Datenvisualisierung",
+      ],
+      en: [
+        "User Authentication",
+        "Product Registration & Management",
+        "Configuration System",
+        "Admin Dashboard",
+        "Advanced Search & Filtering",
+        "Data Visualization",
+      ],
+    },
+    imageLayout: "showcase",
     demoUrl: "https://produktdatenbank-298f60a21e50.herokuapp.com",
-    githubUrl: "https://github.com/stenkjan/ks-database",
-    type: "showcase",
     priority: 2,
   },
   {
-    id: "event-platforms",
-    title: "Event Registration Platforms",
-    subtitle: "Streamlined Event Management Solutions",
-    category: "Web Applications",
-    description:
-      "A suite of three event registration platforms designed for small companies and teams to easily create and manage event websites.",
-    longDescription:
-      "These platforms demonstrate how small organizations can quickly deploy professional event registration systems. Each solution provides customizable registration forms, participant management, and responsive design - perfect for companies that need efficient event management without complex setup.",
-    technologies: [
-      "React",
-      "Next.js",
-      "TypeScript",
-      "Netlify",
-      "Form Handling",
-      "Responsive Design",
-    ],
-    features: [
-      "Quick Event Setup",
-      "Custom Registration Forms",
-      "Participant Management",
-      "Mobile-Friendly Design",
-      "Easy Deployment",
-      "Small Team Focused",
-    ],
-    highlights: [
-      { icon: Zap, text: "Rapid Deployment" },
-      { icon: Users, text: "Small Team Optimized" },
-      { icon: Globe, text: "Professional Results" },
-    ],
-    projects: [
-      { name: "Eule-Grngr", url: "https://github.com/stenkjan/eule-grngr" },
-      { name: "NTGL-Events", url: "https://github.com/stenkjan/ntgl-events" },
-      { name: "Eule-Event", url: "https://github.com/stenkjan/eule_event" },
-    ],
-    images: [
-      "/content/screencapture-eule-grngr raveregistrierung-netlify-app-2025-09-06-13_10_47.pdf",
-    ],
-    type: "summary",
-    priority: 3,
-  },
-  {
-    id: "mobile-apps",
-    title: "Mobile Applications",
-    subtitle: "Flutter & Dart Development",
-    category: "Mobile Development",
-    description:
-      "Native mobile applications built with Flutter, showcasing cross-platform development expertise and modern mobile UI/UX patterns.",
-    longDescription:
-      "Demonstrates proficiency in mobile development with Flutter and Dart, creating applications that work seamlessly across iOS and Android platforms with native performance and beautiful user interfaces.",
+    id: "fusspflege-app",
+    title: {
+      de: "Fußpflege Kundenverwaltung",
+      en: "Foot Care Patient Management",
+    },
+    subtitle: {
+      de: "Mobile Patientenverwaltungs-App",
+      en: "Mobile Patient Management App",
+    },
+    category: { de: "Flutter Mobile App", en: "Flutter Mobile App" },
+    description: {
+      de: "Eine professionelle Flutter-App für Patientenregistrierung und -verwaltung. Enthält umfassende Kundenliste, Teilen-Funktion für Datenexport und benutzerfreundliches Registrierungsformular.",
+      en: "A professional Flutter app for patient registration and management. Features comprehensive customer list, sharing functionality for data export, and user-friendly registration form.",
+    },
+    longDescription: {
+      de: "Diese Flutter-App demonstriert Cross-Platform-Entwicklungsexpertise mit nativem Look & Feel. Die App verwendet moderne Flutter-Widgets und State Management für eine flüssige Benutzererfahrung. Perfekt für kleine Praxen zur Verwaltung ihrer Kundendaten mit Offline-First-Ansatz.",
+      en: "This Flutter app demonstrates cross-platform development expertise with native look & feel. The app uses modern Flutter widgets and state management for a smooth user experience. Perfect for small practices to manage their customer data with an offline-first approach.",
+    },
     technologies: [
       "Flutter",
       "Dart",
-      "Mobile UI/UX",
-      "Cross-Platform",
-      "Native Performance",
+      "SQLite",
+      "Provider State Management",
+      "Material Design",
     ],
-    features: [
-      "Cross-Platform Compatibility",
-      "Native Performance",
-      "Modern UI Design",
-      "Offline Capabilities",
-      "Push Notifications",
-      "App Store Ready",
+    features: {
+      de: [
+        "Kundenliste mit Suchfunktion",
+        "Patientenregistrierung",
+        "Datenexport & Teilen",
+        "Offline-First Architektur",
+        "Sichere Datenverwaltung",
+        "Modernes UI Design",
+      ],
+      en: [
+        "Customer List with Search",
+        "Patient Registration",
+        "Data Export & Sharing",
+        "Offline-First Architecture",
+        "Secure Data Management",
+        "Modern UI Design",
+      ],
+    },
+    imageLayout: "mobile-feature",
+    priority: 3,
+  },
+  {
+    id: "longcovid-app",
+    title: { de: "Long COVID Tracking App", en: "Long COVID Tracking App" },
+    subtitle: {
+      de: "Medizinische Symptomverfolgung",
+      en: "Medical Symptom Tracking",
+    },
+    category: { de: "Flutter Mobile App", en: "Flutter Mobile App" },
+    description: {
+      de: "Eine Flutter-App zur Verfolgung und Verwaltung von Long-COVID-Symptomen, entwickelt als Teil meiner Masterarbeit. Bietet umfassende Funktionen für medizinische Dokumentation und Patientenverwaltung.",
+      en: "A Flutter app for tracking and managing Long COVID symptoms, developed as part of my master's thesis. Provides comprehensive features for medical documentation and patient management.",
+    },
+    longDescription: {
+      de: "Diese App wurde im Rahmen meiner Masterarbeit entwickelt und zeigt meine Fähigkeit, komplexe medizinische Anwendungen zu erstellen. Sie umfasst Symptomverfolgung, Datenvisualisierung und sichere Datenverwaltung für medizinische Zwecke.",
+      en: "This app was developed as part of my master's thesis and demonstrates my ability to create complex medical applications. It includes symptom tracking, data visualization, and secure data management for medical purposes.",
+    },
+    technologies: [
+      "Flutter",
+      "Dart",
+      "Firebase",
+      "Charts & Visualization",
+      "Healthcare Standards",
     ],
-    highlights: [
-      { icon: Smartphone, text: "Cross-Platform Excellence" },
-      { icon: Zap, text: "Native Performance" },
-      { icon: Users, text: "Intuitive User Experience" },
-    ],
-    projects: [
-      { name: "COVID App", url: "https://github.com/stenkjan/covidapp" },
-      {
-        name: "Fuesse und Fusspflege CW",
-        url: "https://github.com/stenkjan/fuesse_und_fusspflege_cw",
-      },
-    ],
-    type: "summary",
+    features: {
+      de: [
+        "Symptomverfolgung",
+        "Datenvisualisierung",
+        "Patientenverwaltung",
+        "Medizinische Dokumentation",
+        "Sichere Datenspeicherung",
+        "Export-Funktionen",
+      ],
+      en: [
+        "Symptom Tracking",
+        "Data Visualization",
+        "Patient Management",
+        "Medical Documentation",
+        "Secure Data Storage",
+        "Export Functions",
+      ],
+    },
+    imageLayout: "showcase",
     priority: 4,
+  },
+  {
+    id: "ntgl-events",
+    title: {
+      de: "NTGL Event-Registrierung",
+      en: "NTGL Event Registration",
+    },
+    subtitle: {
+      de: "Event-Management-Website",
+      en: "Event Management Website",
+    },
+    category: { de: "Next.js Webanwendung", en: "Next.js Web Application" },
+    description: {
+      de: "Eine Next.js Event-Registrierungswebsite mit Flyer-Anzeige, Event-Vorschau und benutzerfreundlichem Registrierungsformular. Optimiert für schnelle Ladezeiten und mobile Geräte.",
+      en: "A Next.js event registration website with flyer display, event preview, and user-friendly registration form. Optimized for fast loading times and mobile devices.",
+    },
+    longDescription: {
+      de: "Diese Website zeigt, wie kleine Unternehmen und Teams schnell professionelle Event-Registrierungssysteme einsetzen können. Bietet anpassbare Registrierungsformulare, Teilnehmerverwaltung und responsives Design - perfekt für Unternehmen, die effizientes Event-Management ohne komplexe Einrichtung benötigen.",
+      en: "This website demonstrates how small businesses and teams can quickly deploy professional event registration systems. Features customizable registration forms, participant management, and responsive design - perfect for companies needing efficient event management without complex setup.",
+    },
+    technologies: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Form Handling",
+    ],
+    features: {
+      de: [
+        "Schnelle Event-Einrichtung",
+        "Benutzerdefinierte Formulare",
+        "Flyer-Integration",
+        "Teilnehmerverwaltung",
+        "Mobiles Design",
+        "SEO-optimiert",
+      ],
+      en: [
+        "Quick Event Setup",
+        "Custom Forms",
+        "Flyer Integration",
+        "Participant Management",
+        "Mobile Design",
+        "SEO Optimized",
+      ],
+    },
+    imageLayout: "showcase",
+    priority: 5,
   },
 ];
 
 export default function ProjectsSection() {
   const [activeProject, setActiveProject] = useState(projects[0].id);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { language } = useLanguage();
 
   const activeProjectData =
     projects.find((p) => p.id === activeProject) || projects[0];
+
+  const projectImages = getProjectImages(activeProject);
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % projectImages.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex(
+      (prev) => (prev - 1 + projectImages.length) % projectImages.length
+    );
+  };
+
+  const renderImageGallery = () => {
+    if (projectImages.length === 0) {
+      return (
+        <div className="bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg p-8 h-full flex items-center justify-center">
+          <p className="text-gray-600 text-center">
+            {language === "de"
+              ? "Bilder werden bald verfügbar sein"
+              : "Images coming soon"}
+          </p>
+        </div>
+      );
+    }
+
+    switch (activeProjectData.imageLayout) {
+      case "main-hero":
+        // Da Hoam: Main landing page at top, grid of 4 images below
+        return (
+          <div className="space-y-4">
+            {/* Main Hero Image */}
+            <div className="relative h-96 rounded-lg overflow-hidden shadow-lg">
+              <Image
+                src={projectImages[0]}
+                alt={`${activeProjectData.title[language]} - Landingpage`}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+            {/* Grid of 4 images */}
+            {projectImages.length > 1 && (
+              <div className="grid grid-cols-2 gap-4">
+                {projectImages.slice(1, 5).map((img, idx) => (
+                  <div
+                    key={idx}
+                    className="relative h-48 rounded-lg overflow-hidden shadow-md"
+                  >
+                    <Image
+                      src={img}
+                      alt={`${activeProjectData.title[language]} - Feature ${idx + 1}`}
+                      fill
+                      className="object-cover hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+
+      case "showcase":
+        // SSC Railtec: Main product screenshot, then smaller detail windows
+        return (
+          <div className="space-y-4">
+            {/* Main Screenshot with menu bar */}
+            <div className="relative h-96 rounded-lg overflow-hidden shadow-lg border-2 border-gray-200">
+              <Image
+                src={projectImages[0]}
+                alt={`${activeProjectData.title[language]} - Hauptansicht`}
+                fill
+                className="object-contain bg-white"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+            {/* Smaller detail windows */}
+            {projectImages.length > 1 && (
+              <div className="grid grid-cols-3 gap-3">
+                {projectImages.slice(1).map((img, idx) => (
+                  <div
+                    key={idx}
+                    className="relative h-32 rounded-lg overflow-hidden shadow-md border border-gray-200"
+                  >
+                    <Image
+                      src={img}
+                      alt={`${activeProjectData.title[language]} - Detail ${idx + 1}`}
+                      fill
+                      className="object-contain bg-gray-50 hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 768px) 33vw, 16vw"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+
+      case "mobile-feature":
+        // Fusspflege: Mobile screenshots in phone frames
+        return (
+          <div className="flex justify-center items-center space-x-4">
+            {projectImages.slice(0, 3).map((img, idx) => (
+              <div key={idx} className="relative">
+                {/* Phone frame */}
+                <div className="relative w-48 h-96 bg-gray-900 rounded-3xl p-2 shadow-2xl">
+                  <div className="relative w-full h-full rounded-2xl overflow-hidden">
+                    <Image
+                      src={img}
+                      alt={`${activeProjectData.title[language]} - Screen ${idx + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="192px"
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        );
+
+      default:
+        // Carousel for other projects
+        return (
+          <div className="relative">
+            <div className="relative h-96 rounded-lg overflow-hidden shadow-lg">
+              <Image
+                src={projectImages[currentImageIndex]}
+                alt={`${activeProjectData.title[language]} - Image ${currentImageIndex + 1}`}
+                fill
+                className="object-contain bg-gray-100"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+            {projectImages.length > 1 && (
+              <>
+                <button
+                  onClick={prevImage}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 rounded-full shadow-lg transition-all"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </button>
+                <button
+                  onClick={nextImage}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 rounded-full shadow-lg transition-all"
+                  aria-label="Next image"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </button>
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+                  {projectImages.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentImageIndex(idx)}
+                      className={`w-2 h-2 rounded-full transition-all ${
+                        idx === currentImageIndex
+                          ? "bg-white w-6"
+                          : "bg-white/50"
+                      }`}
+                      aria-label={`Go to image ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        );
+    }
+  };
 
   return (
     <section id="projects" className="py-20 bg-gray-50">
@@ -190,76 +452,59 @@ export default function ProjectsSection() {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Featured Projects
+            {t("projects.title", language)}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Showcasing modern web applications and mobile solutions built with
-            cutting-edge technologies. Each project demonstrates technical
-            expertise, scalable architecture, and exceptional user experience.
+            {t("projects.subtitle", language)}
           </p>
         </div>
 
         {/* Project Navigation */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {projects.map((project) => (
-            <button
-              key={project.id}
-              onClick={() => setActiveProject(project.id)}
-              className={`px-6 py-3 rounded-full font-medium transition-all duration-200 ${
-                activeProject === project.id
-                  ? "bg-blue-600 text-white shadow-lg"
-                  : "bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 border border-gray-200"
-              }`}
-            >
-              {project.title}
-            </button>
-          ))}
+          {projects
+            .sort((a, b) => a.priority - b.priority)
+            .map((project) => (
+              <button
+                key={project.id}
+                onClick={() => {
+                  setActiveProject(project.id);
+                  setCurrentImageIndex(0);
+                }}
+                className={`px-6 py-3 rounded-full font-medium transition-all duration-200 ${
+                  activeProject === project.id
+                    ? "bg-blue-600 text-white shadow-lg scale-105"
+                    : "bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 border border-gray-200"
+                }`}
+              >
+                {project.title[language]}
+              </button>
+            ))}
         </div>
 
         {/* Active Project Display */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           <div className="grid lg:grid-cols-2 gap-0">
             {/* Project Info */}
-            <div className="p-8 lg:p-12">
+            <div className="p-8 lg:p-12 order-2 lg:order-1">
               <div className="mb-6">
                 <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full mb-4">
-                  {activeProjectData.category}
+                  {activeProjectData.category[language]}
                 </span>
                 <h3 className="text-3xl font-bold text-gray-900 mb-2">
-                  {activeProjectData.title}
+                  {activeProjectData.title[language]}
                 </h3>
                 <p className="text-xl text-blue-600 font-medium mb-4">
-                  {activeProjectData.subtitle}
+                  {activeProjectData.subtitle[language]}
                 </p>
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  {activeProjectData.longDescription}
+                  {activeProjectData.longDescription[language]}
                 </p>
-              </div>
-
-              {/* Key Highlights */}
-              <div className="mb-8">
-                <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                  Key Highlights
-                </h4>
-                <div className="space-y-3">
-                  {activeProjectData.highlights.map((highlight, index) => {
-                    const IconComponent = highlight.icon;
-                    return (
-                      <div key={index} className="flex items-center space-x-3">
-                        <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                          <IconComponent className="h-4 w-4 text-blue-600" />
-                        </div>
-                        <span className="text-gray-700">{highlight.text}</span>
-                      </div>
-                    );
-                  })}
-                </div>
               </div>
 
               {/* Technologies */}
               <div className="mb-8">
                 <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                  Technologies Used
+                  {t("projects.technologies", language)}
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {activeProjectData.technologies.map((tech, index) => (
@@ -276,12 +521,12 @@ export default function ProjectsSection() {
               {/* Features */}
               <div className="mb-8">
                 <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                  Key Features
+                  {t("projects.features", language)}
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {activeProjectData.features.map((feature, index) => (
+                  {activeProjectData.features[language].map((feature, index) => (
                     <div key={index} className="flex items-center space-x-2">
-                      <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                      <div className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0"></div>
                       <span className="text-gray-700 text-sm">{feature}</span>
                     </div>
                   ))}
@@ -298,7 +543,7 @@ export default function ProjectsSection() {
                     className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors group"
                   >
                     <ExternalLink className="mr-2 h-4 w-4" />
-                    <span>View Live Demo</span>
+                    <span>{t("projects.viewDemo", language)}</span>
                     <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </a>
                 )}
@@ -310,11 +555,11 @@ export default function ProjectsSection() {
                     className="inline-flex items-center px-6 py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors"
                   >
                     <Github className="mr-2 h-4 w-4" />
-                    <span>View Code</span>
+                    <span>{t("projects.viewCode", language)}</span>
                   </a>
                 )}
                 {activeProjectData.projects && (
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 w-full">
                     {activeProjectData.projects.map((proj, index) => (
                       <a
                         key={index}
@@ -333,24 +578,8 @@ export default function ProjectsSection() {
             </div>
 
             {/* Project Visual */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-8 lg:p-12 flex items-center justify-center">
-              <div className="w-full max-w-md">
-                {/* Placeholder for project screenshots */}
-                <div className="bg-white rounded-lg shadow-lg p-6 text-center">
-                  <div className="w-full h-48 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center mb-4">
-                    <Globe className="h-16 w-16 text-white" />
-                  </div>
-                  <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                    {activeProjectData.title}
-                  </h4>
-                  <p className="text-gray-600 text-sm mb-4">
-                    Screenshots and live demos available
-                  </p>
-                  <div className="text-xs text-gray-500">
-                    * Visual assets will be integrated from provided screenshots
-                  </div>
-                </div>
-              </div>
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-8 lg:p-12 order-1 lg:order-2">
+              {renderImageGallery()}
             </div>
           </div>
         </div>
@@ -358,13 +587,13 @@ export default function ProjectsSection() {
         {/* Call to Action */}
         <div className="text-center mt-16">
           <p className="text-lg text-gray-600 mb-6">
-            Interested in working together on your next project?
+            {t("projects.interestedCta", language)}
           </p>
           <Link
             href="#contact"
             className="inline-flex items-center px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors group"
           >
-            <span>Let&apos;s Discuss Your Project</span>
+            <span>{t("projects.discussProject", language)}</span>
             <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
@@ -372,4 +601,3 @@ export default function ProjectsSection() {
     </section>
   );
 }
-

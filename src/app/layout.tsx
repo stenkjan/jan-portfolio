@@ -1,7 +1,10 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import StructuredData from "@/components/ui/StructuredData";
+import { LanguageProvider } from "@/contexts/LanguageContext";
+import Chatbot from "@/components/ui/Chatbot";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +30,9 @@ export const metadata: Metadata = {
     "Mobile app development",
     "Frontend developer",
     "Backend developer",
+    "Chatbot integration",
+    "AI assistant",
+    "Jan Stenk",
   ],
   authors: [{ name: "Jan Stenk" }],
   creator: "Jan Stenk",
@@ -44,11 +50,12 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "de_DE",
+    alternateLocale: ["en_US"],
     url: "https://jan-stenk-portfolio.vercel.app",
-    title: "Jan Stenk - React & Next.js Developer",
+    title: "Jan Stenk - React & Next.js Developer | Portfolio",
     description:
-      "Expert React web app developer and Next.js specialist. Creating modern, scalable web solutions with TypeScript.",
+      "Expert React web app developer and Next.js specialist. Creating modern, scalable web solutions with TypeScript. Specializing in chatbot integration and AI-powered websites.",
     siteName: "Jan Stenk Portfolio",
   },
   twitter: {
@@ -56,6 +63,14 @@ export const metadata: Metadata = {
     title: "Jan Stenk - React & Next.js Developer",
     description:
       "Expert React web app developer and Next.js specialist. Creating modern, scalable web solutions.",
+  },
+  metadataBase: new URL("https://jan-stenk-portfolio.vercel.app"),
+  alternates: {
+    canonical: "/",
+    languages: {
+      "de-DE": "/",
+      "en-US": "/",
+    },
   },
 };
 
@@ -65,14 +80,33 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="de">
       <head>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <meta name="theme-color" content="#2563EB" />
         <StructuredData />
+        {/* Google Analytics 4 - Replace with your GA4 Measurement ID */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXX');
+          `}
+        </Script>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <LanguageProvider>
+          {children}
+          <Chatbot />
+        </LanguageProvider>
       </body>
     </html>
   );
