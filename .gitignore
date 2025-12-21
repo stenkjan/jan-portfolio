@@ -1,14 +1,103 @@
-.vercel
-.env*.local
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Dependencies
 /node_modules
-Lebens
-.gitignore
-public/content/Lebenslauf_Stenk_Jan.pdf
-public/content/screencapture-eule-grngr raveregistrierung-netlify-app-2025-09-06-13_10_47.pdf
-public/content/screencapture-landingpage-nest-haus-vercel-app-2025-09-06-13_05_36.pdf
-public/content/screencapture-nest-haus-vercel-app-entdecken-2025-09-06-13_06_17.pdf
-public/content/screencapture-produktdatenbank-298f60a21e50-herokuapp-configurations-2025-09-06-13_04_30.pdf
-public/content/screencapture-produktdatenbank-298f60a21e50-herokuapp-admin-2025-09-06-13_05_08.pdf
-public/content/screencapture-produktdatenbank-298f60a21e50-herokuapp-dashboard-2025-09-06-13_04_17.pdf
-public/content/Screenshot Konfigurator nest-haus.png
-public/content/Masterpresentation covidapp.pptx
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# Testing
+/coverage
+
+# Next.js
+/.next/
+/out/
+
+# Production
+/build
+/dist
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local env files
+.env
+.env*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# OS Files
+Thumbs.db
+.DS_Store
+*.tmp
+
+# Large files and content
+/public/content/
+/public/images/
+/public/screenshots/
+*.pdf
+*.pptx
+*.docx
+*.zip
+*.rar
+*.tar.gz
+
+# Private files
+/private/
+/secrets/
+*.key
+*.pem
+*.cert
+*.p12
+service-account*.json
+
+# Backup files
+*.backup
+*.bak
+*.old
+
+# Logs
+logs
+*.log
+
+# Cache
+.cache/
+.parcel-cache/
+.turbo/
+
+# Temporary files
+tmp/
+temp/
+*.temp
+
+# Editor directories and files
+.cursor/
+.cursorrules
+*.code-workspace
+
+# Build artifacts
+*.tgz
