@@ -1,9 +1,11 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import {
   Mail,
-  Phone,
   MapPin,
   Calendar,
   Send,
@@ -12,29 +14,50 @@ import {
   ExternalLink,
   User,
   MessageSquare,
+  CheckCircle2,
+  AlertCircle,
+  Loader2,
 } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/lib/i18n";
 
-const contactInfo = [
-  {
-    icon: Mail,
-    label: "Email",
-    value: "jan.stenk@example.com",
-    href: "mailto:jan.stenk@example.com",
-    description: "Send me an email anytime",
-  },
-  {
-    icon: Phone,
-    label: "Phone",
-    value: "+49 XXX XXX XXXX",
-    href: "tel:+49XXXXXXXXX",
-    description: "Available during business hours",
-  },
-  {
-    icon: MapPin,
-    label: "Location",
-    value: "Germany",
-    description: "Available for remote work worldwide",
-  },
+// Form validation schema
+const contactSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  company: z.string().optional(),
+  projectType: z.string().min(1, "Please select a project type"),
+  budget: z.string().optional(),
+  timeline: z.string().optional(),
+  message: z.string().min(10, "Message must be at least 10 characters"),
+  preferredDate: z.string().optional(),
+  preferredTime: z.string().optional(),
+});
+
+type ContactFormData = z.infer<typeof contactSchema>;
+
+const timeSlots = ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00"];
+
+const projectTypesDE = [
+  "Webseiten-Entwicklung",
+  "Mobile App-Entwicklung",
+  "Full-Stack Entwicklung",
+  "Chatbot-Integration",
+  "Technische Beratung",
+  "Code Review & Optimierung",
+  "Teamzusammenarbeit",
+  "Sonstiges",
+];
+
+const projectTypesEN = [
+  "Website Development",
+  "Mobile App Development",
+  "Full-Stack Development",
+  "Chatbot Integration",
+  "Technical Consultation",
+  "Code Review & Optimization",
+  "Team Collaboration",
+  "Other",
 ];
 
 const socialLinks = [
@@ -52,88 +75,98 @@ const socialLinks = [
   },
 ];
 
-const timeSlots = ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00"];
-
-const projectTypes = [
-  "Web Application Development",
-  "Mobile App Development",
-  "Full-Stack Development",
-  "Technical Consultation",
-  "Code Review & Optimization",
-  "Team Collaboration",
-  "Other",
-];
-
 export default function ContactSection() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    company: "",
-    projectType: "",
-    budget: "",
-    timeline: "",
-    message: "",
-    preferredDate: "",
-    preferredTime: "",
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+  const { language } = useLanguage();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const projectTypes = language === 'de' ? projectTypesDE : projectTypesEN;
 
-  const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setErrorMessage('');
 
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      alert(
-        "Thank you for your message! I&apos;ll get back to you within 24 hours."
-      );
-      setFormData({
-        name: "",
-        email: "",
-        company: "",
-        projectType: "",
-        budget: "",
-        timeline: "",
-        message: "",
-        preferredDate: "",
-        preferredTime: "",
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       });
-    }, 2000);
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to send message');
+      }
+
+      setSubmitStatus('success');
+      reset();
+
+      // Reset success message after 5 seconds
+      setTimeout(() => {
+        setSubmitStatus('idle');
+      }, 5000);
+    } catch (error) {
+      setSubmitStatus('error');
+      setErrorMessage(
+        error instanceof Error ? error.message : 'An error occurred. Please try again.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  const contactInfo = [
+    {
+      icon: Mail,
+      label: "Email",
+      value: "stenkjan@gmail.com",
+      href: "mailto:stenkjan@gmail.com",
+      description: language === 'de' ? "Schreiben Sie mir jederzeit" : "Send me an email anytime",
+    },
+    {
+      icon: MapPin,
+      label: language === 'de' ? "Standort" : "Location",
+      value: "Germany",
+      description: language === 'de' 
+        ? "Verfügbar für Remote-Arbeit weltweit" 
+        : "Available for remote work worldwide",
+    },
+  ];
 
   return (
-    <section id="contact" className="py-20 bg-gray-50">
+    <section id="contact" className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Let&apos;s Work Together
+            {t("contact.title", language)}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Ready to bring your project to life? Let&apos;s discuss how I can
-            help you create exceptional web applications and mobile solutions
-            that drive your business forward.
+            {t("contact.subtitle", language)}
           </p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-12">
           {/* Contact Information */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-lg p-8">
+            <div className="bg-white rounded-2xl shadow-xl p-8 sticky top-24">
               {/* Profile Section */}
               <div className="text-center mb-8">
-                <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
                   <User className="h-12 w-12 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
@@ -143,9 +176,9 @@ export default function ContactSection() {
                   Full-Stack Developer
                 </p>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  Experienced React & Next.js developer specializing in modern
-                  web applications and mobile solutions. Ready to help bring
-                  your ideas to life.
+                  {language === 'de'
+                    ? "Erfahrener React & Next.js Entwickler, spezialisiert auf moderne Webanwendungen und mobile Lösungen."
+                    : "Experienced React & Next.js developer specializing in modern web applications and mobile solutions."}
                 </p>
               </div>
 
@@ -165,7 +198,7 @@ export default function ContactSection() {
                         {info.href ? (
                           <a
                             href={info.href}
-                            className="text-blue-600 hover:text-blue-700 transition-colors"
+                            className="text-blue-600 hover:text-blue-700 transition-colors break-all"
                           >
                             {info.value}
                           </a>
@@ -184,7 +217,7 @@ export default function ContactSection() {
               {/* Social Links */}
               <div className="border-t border-gray-200 pt-6">
                 <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                  Connect With Me
+                  {language === 'de' ? "Vernetzen Sie sich mit mir" : "Connect With Me"}
                 </h4>
                 <div className="space-y-3">
                   {socialLinks.map((social, index) => {
@@ -210,16 +243,17 @@ export default function ContactSection() {
               </div>
 
               {/* Availability */}
-              <div className="mt-6 p-4 bg-green-50 rounded-lg">
+              <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
                 <div className="flex items-center space-x-2 mb-2">
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
                   <span className="font-medium text-gray-900">
-                    Available for Projects
+                    {language === 'de' ? "Verfügbar für Projekte" : "Available for Projects"}
                   </span>
                 </div>
                 <p className="text-sm text-gray-600">
-                  Currently accepting new projects and collaborations. Response
-                  time: Within 24 hours.
+                  {language === 'de'
+                    ? "Aktuell nehme ich neue Projekte an. Antwortzeit: Innerhalb von 24 Stunden."
+                    : "Currently accepting new projects. Response time: Within 24 hours."}
                 </p>
               </div>
             </div>
@@ -227,15 +261,45 @@ export default function ContactSection() {
 
           {/* Contact Form */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-2xl shadow-lg p-8">
+            <div className="bg-white rounded-2xl shadow-xl p-8">
               <div className="flex items-center space-x-3 mb-6">
                 <MessageSquare className="h-6 w-6 text-blue-600" />
                 <h3 className="text-2xl font-bold text-gray-900">
-                  Start a Conversation
+                  {language === 'de' ? "Beginnen Sie ein Gespräch" : "Start a Conversation"}
                 </h3>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Success Message */}
+              {submitStatus === 'success' && (
+                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-start space-x-3">
+                  <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold text-green-900">
+                      {language === 'de' ? "Nachricht gesendet!" : "Message Sent!"}
+                    </h4>
+                    <p className="text-sm text-green-700">
+                      {language === 'de'
+                        ? "Vielen Dank für Ihre Nachricht! Ich werde mich innerhalb von 24 Stunden bei Ihnen melden."
+                        : "Thank you for your message! I'll get back to you within 24 hours."}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Error Message */}
+              {submitStatus === 'error' && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start space-x-3">
+                  <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold text-red-900">
+                      {language === 'de' ? "Fehler" : "Error"}
+                    </h4>
+                    <p className="text-sm text-red-700">{errorMessage}</p>
+                  </div>
+                </div>
+              )}
+
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Basic Information */}
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
@@ -243,36 +307,40 @@ export default function ContactSection() {
                       htmlFor="name"
                       className="block text-sm font-medium text-gray-700 mb-2"
                     >
-                      Full Name *
+                      {language === 'de' ? "Vollständiger Name *" : "Full Name *"}
                     </label>
                     <input
+                      {...register("name")}
                       type="text"
                       id="name"
-                      name="name"
-                      required
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                      placeholder="Your full name"
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
+                        errors.name ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                      placeholder={language === 'de' ? "Ihr vollständiger Name" : "Your full name"}
                     />
+                    {errors.name && (
+                      <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
+                    )}
                   </div>
                   <div>
                     <label
                       htmlFor="email"
                       className="block text-sm font-medium text-gray-700 mb-2"
                     >
-                      Email Address *
+                      {language === 'de' ? "E-Mail-Adresse *" : "Email Address *"}
                     </label>
                     <input
+                      {...register("email")}
                       type="email"
                       id="email"
-                      name="email"
-                      required
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
+                        errors.email ? 'border-red-500' : 'border-gray-300'
+                      }`}
                       placeholder="your@email.com"
                     />
+                    {errors.email && (
+                      <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+                    )}
                   </div>
                 </div>
 
@@ -281,16 +349,14 @@ export default function ContactSection() {
                     htmlFor="company"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Company/Organization
+                    {language === 'de' ? "Firma/Organisation" : "Company/Organization"}
                   </label>
                   <input
+                    {...register("company")}
                     type="text"
                     id="company"
-                    name="company"
-                    value={formData.company}
-                    onChange={handleInputChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                    placeholder="Your company name (optional)"
+                    placeholder={language === 'de' ? "Ihr Firmenname (optional)" : "Your company name (optional)"}
                   />
                 </div>
 
@@ -301,55 +367,59 @@ export default function ContactSection() {
                       htmlFor="projectType"
                       className="block text-sm font-medium text-gray-700 mb-2"
                     >
-                      Project Type *
+                      {language === 'de' ? "Projekttyp *" : "Project Type *"}
                     </label>
                     <select
+                      {...register("projectType")}
                       id="projectType"
-                      name="projectType"
-                      required
-                      value={formData.projectType}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
+                        errors.projectType ? 'border-red-500' : 'border-gray-300'
+                      }`}
                     >
-                      <option value="">Select project type</option>
+                      <option value="">
+                        {language === 'de' ? "Projekttyp auswählen" : "Select project type"}
+                      </option>
                       {projectTypes.map((type, index) => (
                         <option key={index} value={type}>
                           {type}
                         </option>
                       ))}
                     </select>
+                    {errors.projectType && (
+                      <p className="mt-1 text-sm text-red-600">{errors.projectType.message}</p>
+                    )}
                   </div>
                   <div>
                     <label
                       htmlFor="timeline"
                       className="block text-sm font-medium text-gray-700 mb-2"
                     >
-                      Timeline
+                      {language === 'de' ? "Zeitrahmen" : "Timeline"}
                     </label>
                     <select
+                      {...register("timeline")}
                       id="timeline"
-                      name="timeline"
-                      value={formData.timeline}
-                      onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                     >
-                      <option value="">Select timeline</option>
-                      <option value="asap">ASAP</option>
-                      <option value="1-2 weeks">1-2 weeks</option>
-                      <option value="1 month">1 month</option>
-                      <option value="2-3 months">2-3 months</option>
-                      <option value="3+ months">3+ months</option>
-                      <option value="flexible">Flexible</option>
+                      <option value="">
+                        {language === 'de' ? "Zeitrahmen auswählen" : "Select timeline"}
+                      </option>
+                      <option value="asap">{language === 'de' ? "So bald wie möglich" : "ASAP"}</option>
+                      <option value="1-2 weeks">{language === 'de' ? "1-2 Wochen" : "1-2 weeks"}</option>
+                      <option value="1 month">{language === 'de' ? "1 Monat" : "1 month"}</option>
+                      <option value="2-3 months">{language === 'de' ? "2-3 Monate" : "2-3 months"}</option>
+                      <option value="3+ months">{language === 'de' ? "3+ Monate" : "3+ months"}</option>
+                      <option value="flexible">{language === 'de' ? "Flexibel" : "Flexible"}</option>
                     </select>
                   </div>
                 </div>
 
                 {/* Meeting Scheduling */}
-                <div className="bg-blue-50 p-6 rounded-lg">
+                <div className="bg-blue-50 p-6 rounded-lg border border-blue-100">
                   <div className="flex items-center space-x-2 mb-4">
                     <Calendar className="h-5 w-5 text-blue-600" />
                     <h4 className="font-semibold text-gray-900">
-                      Schedule a Call (Optional)
+                      {language === 'de' ? "Anruf vereinbaren (Optional)" : "Schedule a Call (Optional)"}
                     </h4>
                   </div>
                   <div className="grid md:grid-cols-2 gap-4">
@@ -358,14 +428,12 @@ export default function ContactSection() {
                         htmlFor="preferredDate"
                         className="block text-sm font-medium text-gray-700 mb-2"
                       >
-                        Preferred Date
+                        {language === 'de' ? "Bevorzugtes Datum" : "Preferred Date"}
                       </label>
                       <input
+                        {...register("preferredDate")}
                         type="date"
                         id="preferredDate"
-                        name="preferredDate"
-                        value={formData.preferredDate}
-                        onChange={handleInputChange}
                         min={new Date().toISOString().split("T")[0]}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                       />
@@ -375,16 +443,16 @@ export default function ContactSection() {
                         htmlFor="preferredTime"
                         className="block text-sm font-medium text-gray-700 mb-2"
                       >
-                        Preferred Time (CET)
+                        {language === 'de' ? "Bevorzugte Zeit (CET)" : "Preferred Time (CET)"}
                       </label>
                       <select
+                        {...register("preferredTime")}
                         id="preferredTime"
-                        name="preferredTime"
-                        value={formData.preferredTime}
-                        onChange={handleInputChange}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                       >
-                        <option value="">Select time</option>
+                        <option value="">
+                          {language === 'de' ? "Zeit auswählen" : "Select time"}
+                        </option>
                         {timeSlots.map((time, index) => (
                           <option key={index} value={time}>
                             {time}
@@ -401,24 +469,32 @@ export default function ContactSection() {
                     htmlFor="message"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Project Description *
+                    {language === 'de' ? "Projektbeschreibung *" : "Project Description *"}
                   </label>
                   <textarea
+                    {...register("message")}
                     id="message"
-                    name="message"
-                    required
                     rows={6}
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none"
-                    placeholder="Tell me about your project, goals, and how I can help you achieve them..."
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none ${
+                      errors.message ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder={
+                      language === 'de'
+                        ? "Erzählen Sie mir von Ihrem Projekt, Ihren Zielen und wie ich Ihnen helfen kann..."
+                        : "Tell me about your project, goals, and how I can help you achieve them..."
+                    }
                   ></textarea>
+                  {errors.message && (
+                    <p className="mt-1 text-sm text-red-600">{errors.message.message}</p>
+                  )}
                 </div>
 
                 {/* Submit Button */}
                 <div className="flex items-center justify-between pt-6">
                   <p className="text-sm text-gray-500">
-                    * Required fields. I&apos;ll respond within 24 hours.
+                    {language === 'de'
+                      ? "* Pflichtfelder. Ich antworte innerhalb von 24 Stunden."
+                      : "* Required fields. I'll respond within 24 hours."}
                   </p>
                   <button
                     type="submit"
@@ -431,13 +507,13 @@ export default function ContactSection() {
                   >
                     {isSubmitting ? (
                       <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                        <span>Sending...</span>
+                        <Loader2 className="animate-spin h-4 w-4 mr-2" />
+                        <span>{language === 'de' ? "Wird gesendet..." : "Sending..."}</span>
                       </>
                     ) : (
                       <>
                         <Send className="mr-2 h-4 w-4" />
-                        <span>Send Message</span>
+                        <span>{language === 'de' ? "Nachricht senden" : "Send Message"}</span>
                       </>
                     )}
                   </button>
@@ -450,4 +526,3 @@ export default function ContactSection() {
     </section>
   );
 }
-
