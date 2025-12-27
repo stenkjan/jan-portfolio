@@ -170,23 +170,23 @@ export default function HeroSection() {
                     <h3 className="text-xl font-semibold text-gray-900 mb-4">
                       Tech Stack
                     </h3>
-                    <div className="grid grid-cols-2 gap-3 text-sm">
-                      <div className="bg-blue-50 px-3 py-2 rounded-lg">
+                    <div className="grid grid-cols-2 gap-3 text-sm font-medium">
+                      <div className="bg-blue-100 text-blue-800 px-3 py-2 rounded-lg">
                         React
                       </div>
-                      <div className="bg-indigo-50 px-3 py-2 rounded-lg">
+                      <div className="bg-indigo-100 text-indigo-800 px-3 py-2 rounded-lg">
                         Next.js
                       </div>
-                      <div className="bg-purple-50 px-3 py-2 rounded-lg">
+                      <div className="bg-purple-100 text-purple-800 px-3 py-2 rounded-lg">
                         TypeScript
                       </div>
-                      <div className="bg-green-50 px-3 py-2 rounded-lg">
+                      <div className="bg-green-100 text-green-800 px-3 py-2 rounded-lg">
                         Node.js
                       </div>
-                      <div className="bg-yellow-50 px-3 py-2 rounded-lg">
+                      <div className="bg-yellow-100 text-yellow-800 px-3 py-2 rounded-lg">
                         Flutter
                       </div>
-                      <div className="bg-red-50 px-3 py-2 rounded-lg">
+                      <div className="bg-red-100 text-red-800 px-3 py-2 rounded-lg">
                         PostgreSQL
                       </div>
                     </div>

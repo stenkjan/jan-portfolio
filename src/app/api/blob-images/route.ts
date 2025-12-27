@@ -1,6 +1,9 @@
 import { list } from '@vercel/blob';
 import { NextResponse } from 'next/server';
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const prefix = searchParams.get('prefix'); // e.g., "da-hoam_"
