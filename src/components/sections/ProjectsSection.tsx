@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import BlobImage from "@/components/ui/BlobImage";
 import {
   ExternalLink,
   Github,
@@ -47,9 +48,11 @@ const projects = [
       { icon: Users, text: "Exceptional User Experience" },
     ],
     images: [
-      "/content/screencapture-landingpage-nest-haus-vercel-app-2025-09-06-13_05_36.pdf",
-      "/content/Screenshot Konfigurator nest-haus.png",
-      "/content/screencapture-nest-haus-vercel-app-entdecken-2025-09-06-13_06_17.pdf",
+      "da-hoam_konfigurator",
+      "da-hoam_landingpage",
+      "da-hoam_konzeptcheck",
+      "da-hoam_warumwir",
+      "da-hoam_kontakt",
     ],
     demoUrl: "https://nest-haus.vercel.app",
     githubUrl: "https://github.com/stenkjan/nest-haus",
@@ -87,9 +90,10 @@ const projects = [
       { icon: Users, text: "Team-Friendly Codebase" },
     ],
     images: [
-      "/content/screencapture-produktdatenbank-298f60a21e50-herokuapp-dashboard-2025-09-06-13_04_17.pdf",
-      "/content/screencapture-produktdatenbank-298f60a21e50-herokuapp-configurations-2025-09-06-13_04_30.pdf",
-      "/content/screencapture-produktdatenbank-298f60a21e50-herokuapp-admin-2025-09-06-13_05_08.pdf",
+      "produktdatenbank_produkt",
+      "produktdatenbank_konfigurationen",
+      "produktdatenbank_signin",
+      "produktdatenbank_verwaltung",
     ],
     demoUrl: "https://produktdatenbank-298f60a21e50.herokuapp.com",
     githubUrl: "https://github.com/stenkjan/ks-database",
@@ -132,7 +136,10 @@ const projects = [
       { name: "Eule-Event", url: "https://github.com/stenkjan/eule_event" },
     ],
     images: [
-      "/content/screencapture-eule-grngr raveregistrierung-netlify-app-2025-09-06-13_10_47.pdf",
+      "fusspflege_registrierung",
+      "fusspflege_kundenliste",
+      "fusspflege_teilen",
+      "ntgl_eventseite",
     ],
     type: "summary",
     priority: 3,
@@ -165,6 +172,9 @@ const projects = [
       { icon: Smartphone, text: "Cross-Platform Excellence" },
       { icon: Zap, text: "Native Performance" },
       { icon: Users, text: "Intuitive User Experience" },
+    ],
+    images: [
+      "masterarbeit_Longcovidapp",
     ],
     projects: [
       { name: "COVID App", url: "https://github.com/stenkjan/covidapp" },
@@ -334,22 +344,36 @@ export default function ProjectsSection() {
 
             {/* Project Visual */}
             <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-8 lg:p-12 flex items-center justify-center">
-              <div className="w-full max-w-md">
-                {/* Placeholder for project screenshots */}
-                <div className="bg-white rounded-lg shadow-lg p-6 text-center">
-                  <div className="w-full h-48 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center mb-4">
-                    <Globe className="h-16 w-16 text-white" />
+              <div className="w-full">
+                {activeProjectData.images && activeProjectData.images.length > 0 ? (
+                  <div className="space-y-4">
+                    {activeProjectData.images.map((imagePrefix, index) => (
+                      <div
+                        key={index}
+                        className="bg-white rounded-lg shadow-lg overflow-hidden"
+                      >
+                        <BlobImage
+                          prefix={imagePrefix}
+                          alt={`${activeProjectData.title} screenshot ${index + 1}`}
+                          className="w-full"
+                        />
+                      </div>
+                    ))}
                   </div>
-                  <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                    {activeProjectData.title}
-                  </h4>
-                  <p className="text-gray-600 text-sm mb-4">
-                    Screenshots and live demos available
-                  </p>
-                  <div className="text-xs text-gray-500">
-                    * Visual assets will be integrated from provided screenshots
+                ) : (
+                  // Fallback if no images
+                  <div className="bg-white rounded-lg shadow-lg p-6 text-center">
+                    <div className="w-full h-48 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center mb-4">
+                      <Globe className="h-16 w-16 text-white" />
+                    </div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                      {activeProjectData.title}
+                    </h4>
+                    <p className="text-gray-600 text-sm">
+                      View live demo or source code
+                    </p>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
