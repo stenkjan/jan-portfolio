@@ -69,3 +69,4 @@ export default function BlobImage({ prefix, alt, className = "" }: BlobImageProp
   );
 }
 
+

@@ -139,3 +139,4 @@ If you still can't get it working:
 - ✅ All 14 project images displayed
 - ✅ Tech stack visibility improved
 
+

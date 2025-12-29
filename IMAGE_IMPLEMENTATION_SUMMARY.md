@@ -127,3 +127,4 @@ Consider adding from nest-haus:
 - Verify image paths work correctly on Vercel
 - Test PDF downloads in production environment
 
+
