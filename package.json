@@ -2,15 +2,17 @@
   "name": "jan-stenk-portfolio",
   "version": "1.0.0",
   "private": true,
-  "description": "Professional portfolio website for Jan Stenk - React web app developer, Next.js specialist, and Flutter developer",
+  "description": "Referenz- und Akquiseseite von Jan Stenk: Automatisierung mit menschlicher Freigabe, Buchungs- und Preissysteme, Web-Anwendungen.",
   "author": "Jan Stenk",
   "keywords": [
-    "portfolio",
-    "react",
+    "automatisierung",
+    "ki-agenten",
+    "buchungssystem",
+    "preissteuerung",
     "nextjs",
     "typescript",
-    "flutter",
-    "web-developer"
+    "react",
+    "flutter"
   ],
   "homepage": "https://jan-stenk-portfolio.vercel.app",
   "scripts": {

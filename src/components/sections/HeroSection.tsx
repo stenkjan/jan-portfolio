@@ -1,206 +1,100 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import {
-  ArrowRight,
-  Download,
-  Code2,
-  Smartphone,
-  Database,
-  Globe,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { CONTACT, LEBENSLAUF, RATES } from "@/lib/site";
 
-const skills = [
-  { icon: Code2, label: "React & Next.js", delay: 0 },
-  { icon: Smartphone, label: "Flutter", delay: 100 },
-  { icon: Database, label: "Full-Stack", delay: 200 },
-  { icon: Globe, label: "TypeScript", delay: 300 },
-];
-
-const roles = [
-  "React Web App Developer",
-  "Next.js Developer",
-  "Flutter Developer",
-  "Full-Stack Developer",
-  "TypeScript Expert",
+/**
+ * Der Einstieg bleibt bewusst ruhig: eine Aussage, ein Absatz, zwei Wege
+ * weiter. Kennzahlen stehen nicht hier, sondern bei dem Projekt, aus dem sie
+ * stammen — eine Zahl ohne ihren Zusammenhang ist eine Behauptung.
+ */
+const schwerpunkte = [
+  {
+    titel: "Automatisierung mit Freigabe",
+    text: "Wiederkehrende Arbeit läuft selbsttätig. An jeder Stelle, an der Geld oder Außenwirkung im Spiel ist, entscheidet ein Mensch.",
+  },
+  {
+    titel: "Web-Anwendungen im Betrieb",
+    text: "Von der ersten Zeile bis zur laufenden Anwendung: Datenmodell, Schnittstellen, Zahlungen, Überwachung.",
+  },
+  {
+    titel: "Übergabefähig gebaut",
+    text: "Dokumentation, Tests und festgehaltene Entscheidungen gehören zum Auftrag — nicht zu einem späteren Angebot.",
+  },
 ];
 
 export default function HeroSection() {
-  const [currentRole, setCurrentRole] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    setIsVisible(true);
-    const interval = setInterval(() => {
-      setCurrentRole((prev) => (prev + 1) % roles.length);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
+  const statusZeilen = [
+    CONTACT.location,
+    "Remote",
+    RATES.availability,
+  ].filter(Boolean);
 
   return (
-    <section
-      id="home"
-      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 pt-16"
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Column - Text Content */}
-          <div
-            className={`transition-all duration-1000 ${
-              isVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-10"
-            }`}
+    <section id="start" className="pt-36 pb-20 sm:pt-44 sm:pb-24">
+      <div className="mx-auto max-w-5xl px-5 sm:px-8">
+        <p className="marke mb-8">Softwareentwickler &amp; Automatisierung</p>
+
+        <h1 className="schrift-serif text-[2.75rem] leading-[1.08] sm:text-6xl sm:leading-[1.06] font-normal text-tinte max-w-3xl text-balance">
+          Ich baue Systeme, die ohne mich weiterlaufen.
+        </h1>
+
+        <p className="mt-8 max-w-[58ch] text-lg leading-relaxed text-tinte-leise">
+          Auftragsentwicklung für Agenturen, Softwarehäuser und Betriebe, die
+          eine Anwendung nicht nur gebaut, sondern auch betrieben brauchen.
+          Schwerpunkt: Abläufe automatisieren, ohne dass die Entscheidung an die
+          Maschine übergeht.
+        </p>
+
+        <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+          <Link
+            href="#projekte"
+            className="group inline-flex items-center gap-2 bg-akzent px-6 py-3 text-[0.9375rem] font-medium text-white rounded-sm hover:bg-akzent-hell transition-colors"
           >
-            {/* Greeting */}
-            <div className="mb-6">
-              <p className="text-blue-600 font-medium text-lg mb-2">
-                Hello, I&apos;m
-              </p>
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-4">
-                Jan Stenk
-              </h1>
-              <div className="h-16 sm:h-20">
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-gray-700 leading-tight">
-                  <span className="inline-block transition-all duration-500 ease-in-out">
-                    {roles[currentRole]}
-                  </span>
-                </h2>
-              </div>
-            </div>
-
-            {/* Description */}
-            <p className="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed max-w-2xl">
-              I create modern, scalable web applications and mobile solutions
-              using cutting-edge technologies. Specializing in React ecosystems,
-              TypeScript, and full-stack development with a focus on clean
-              architecture and exceptional user experiences.
-            </p>
-
-            {/* Skills Icons */}
-            <div className="flex flex-wrap gap-4 mb-8">
-              {skills.map((skill) => {
-                const IconComponent = skill.icon;
-                return (
-                  <div
-                    key={skill.label}
-                    className={`flex items-center space-x-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-100 transition-all duration-500 hover:shadow-md hover:scale-105 ${
-                      isVisible
-                        ? "opacity-100 translate-y-0"
-                        : "opacity-0 translate-y-5"
-                    }`}
-                    style={{ transitionDelay: `${skill.delay}ms` }}
-                  >
-                    <IconComponent className="h-5 w-5 text-blue-600" />
-                    <span className="text-sm font-medium text-gray-700">
-                      {skill.label}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href="#projects"
-                className="inline-flex items-center justify-center px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-all duration-200 hover:scale-105 hover:shadow-lg group"
-              >
-                <span>View My Work</span>
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </Link>
-              <Link
-                href="#contact"
-                className="inline-flex items-center justify-center px-8 py-3 bg-white text-gray-900 font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition-all duration-200 hover:scale-105 hover:shadow-md group"
-              >
-                <Download className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
-                <span>Download CV</span>
-              </Link>
-            </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-gray-200">
-              <div className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-blue-600">
-                  6+
-                </div>
-                <div className="text-sm text-gray-600 mt-1">Projects</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-blue-600">
-                  4+
-                </div>
-                <div className="text-sm text-gray-600 mt-1">
-                  Years Experience
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-blue-600">
-                  10+
-                </div>
-                <div className="text-sm text-gray-600 mt-1">Technologies</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column - Visual Element */}
-          <div
-            className={`relative transition-all duration-1000 delay-300 ${
-              isVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-10"
-            }`}
+            <span>Arbeit ansehen</span>
+            <ArrowRight
+              className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+              strokeWidth={1.75}
+            />
+          </Link>
+          <a
+            href={LEBENSLAUF.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="textlink text-[0.9375rem]"
           >
-            <div className="relative">
-              {/* Main Card */}
-              <div className="bg-white rounded-2xl shadow-2xl p-8 relative overflow-hidden">
-                {/* Background Pattern */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-100 opacity-50"></div>
+            {LEBENSLAUF.label}
+          </a>
+          <Link href="#konditionen" className="textlink text-[0.9375rem]">
+            Konditionen und Verfügbarkeit
+          </Link>
+        </div>
 
-                {/* Profile Image Placeholder */}
-                <div className="relative z-10 flex flex-col items-center">
-                  <div className="w-48 h-48 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mb-6 shadow-lg">
-                    <Code2 className="h-24 w-24 text-white" />
-                  </div>
+        {statusZeilen.length > 0 && (
+          <p className="mt-10 text-sm text-tinte-still">
+            {statusZeilen.join(" · ")}
+          </p>
+        )}
 
-                  {/* Tech Stack */}
-                  <div className="text-center">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                      Tech Stack
-                    </h3>
-                    <div className="grid grid-cols-2 gap-3 text-sm font-medium">
-                      <div className="bg-blue-100 text-blue-800 px-3 py-2 rounded-lg">
-                        React
-                      </div>
-                      <div className="bg-indigo-100 text-indigo-800 px-3 py-2 rounded-lg">
-                        Next.js
-                      </div>
-                      <div className="bg-purple-100 text-purple-800 px-3 py-2 rounded-lg">
-                        TypeScript
-                      </div>
-                      <div className="bg-green-100 text-green-800 px-3 py-2 rounded-lg">
-                        Node.js
-                      </div>
-                      <div className="bg-yellow-100 text-yellow-800 px-3 py-2 rounded-lg">
-                        Flutter
-                      </div>
-                      <div className="bg-red-100 text-red-800 px-3 py-2 rounded-lg">
-                        PostgreSQL
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Floating Elements */}
-              <div className="absolute -top-4 -right-4 w-20 h-20 bg-blue-500 rounded-full opacity-20 animate-pulse"></div>
+        {/* Schwerpunkte: drei Spalten, getrennt durch Haarlinien statt Kästen. */}
+        <div className="mt-20 sm:mt-24 border-t border-linie">
+          <div className="grid sm:grid-cols-3">
+            {schwerpunkte.map((schwerpunkt, index) => (
               <div
-                className="absolute -bottom-6 -left-6 w-32 h-32 bg-indigo-500 rounded-full opacity-10 animate-pulse"
-                style={{ animationDelay: "1s" }}
-              ></div>
-            </div>
+                key={schwerpunkt.titel}
+                className={`py-8 sm:py-10 sm:pr-10 ${
+                  index > 0
+                    ? "border-t border-linie sm:border-t-0 sm:border-l sm:border-linie sm:pl-10 sm:pr-0 lg:pr-10"
+                    : ""
+                }`}
+              >
+                <h2 className="schrift-serif text-xl text-tinte mb-3">
+                  {schwerpunkt.titel}
+                </h2>
+                <p className="text-[0.9375rem] leading-relaxed text-tinte-leise">
+                  {schwerpunkt.text}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </div>

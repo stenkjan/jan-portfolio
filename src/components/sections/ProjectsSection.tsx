@@ -1,32 +1,93 @@
-"use client";
-
-import { useState } from "react";
-import Link from "next/link";
 import BlobImage from "@/components/ui/BlobImage";
-import {
-  ExternalLink,
-  Github,
-  Database,
-  Globe,
-  Smartphone,
-  Users,
-  ArrowRight,
-  Code2,
-  Zap,
-  Shield,
-} from "lucide-react";
 
-const projects = [
+/**
+ * Zwei ausführliche Projekte, danach eine kompakte Liste.
+ *
+ * Hoam House ist ein Auftraggeber mit zwei getrennten Vorhaben: die Website mit
+ * dem Konfigurator, die das Modulkonzept erklärt und das Haus an Endkunden wie
+ * an Gewerbe verkauft — und das Buchungssystem, das Verwaltung und Vermietung
+ * automatisiert. Sie teilen sich die Marke, sonst nichts. Auf der Seite muss
+ * dieser Unterschied sichtbar sein, sonst liest es sich wie ein einziges,
+ * doppelt aufgeführtes Projekt.
+ *
+ * Betriebszahlen des Auftraggebers — Umsätze, Belegung, Provisionen — stehen
+ * hier grundsätzlich nicht. Genannt sind nur Zahlen zum System selbst.
+ */
+
+type Projekt = {
+  id: string;
+  titel: string;
+  auftraggeber?: string;
+  rolle: string;
+  zeitraum: string;
+  aufgabe: string;
+  beschreibung: string;
+  loesung: string[];
+  technik: string[];
+  kennzahlen?: { wert: string; label: string }[];
+  hinweis?: string;
+  images?: string[];
+  links?: { label: string; url: string }[];
+};
+
+const leitprojekte: Projekt[] = [
   {
-    id: "nest-haus",
-    title: "Nest-Haus",
-    subtitle: "Modern House Configuration Platform",
-    category: "Web Application",
-    description:
-      "A sophisticated Next.js application for house configuration and visualization. Features an interactive configurator, dynamic pricing system, and comprehensive property exploration.",
-    longDescription:
-      "Built with Next.js 15, TypeScript, and modern architecture patterns. Implements complex state management, real-time configuration updates, and responsive design for optimal user experience across all devices.",
-    technologies: [
+    id: "buchungssystem",
+    titel: "Buchungs- und Vermietungsautomatisierung",
+    auftraggeber: "Hoam House · Nebenprojekt zur Website",
+    rolle: "Alleinentwickler, agentengestützt",
+    zeitraum: "Mai bis September 2026 · im produktiven Betrieb",
+    aufgabe:
+      "Verwaltung und Vermietung automatisieren, ohne die Preishoheit abzugeben.",
+    beschreibung:
+      "Ein eigenständiges System neben der Verkaufsseite: Es verwaltet die Objekte und steuert die Vermietung. Gäste buchen direkt — Verfügbarkeit, Preisberechnung, Zahlung über Stripe, Bestätigung und Rechnung mit eigener Nummernreihe. Parallel laufen Airbnb, Booking.com, Vrbo und Beds24 auf demselben Kalender; eine Doppelbuchung ist durch den Aufbau ausgeschlossen, nicht durch Nachkontrolle. Preisregeln kommen aus der Tabelle des Betreibers und werden täglich abgeglichen. Ein Sprachmodell schlägt Preise und Belegung vor — freigegeben wird von Hand, nie automatisch.",
+    loesung: [
+      "Buchungsstrecke mit Verfügbarkeit, Preis, Zahlung und Rechnung",
+      "Kalenderabgleich über vier Vertriebskanäle",
+      "Doppelbuchung durch Sperren im Datenmodell ausgeschlossen",
+      "Preisvorschläge mit vorgeschaltetem Freigabe-Workflow",
+      "Zeitgesteuerte Läufe mit Überwachung und Protokoll",
+    ],
+    technik: [
+      "Next.js",
+      "TypeScript",
+      "Prisma",
+      "PostgreSQL (Neon)",
+      "Stripe",
+      "Beds24",
+      "Google Sheets/Drive API",
+      "Vercel",
+      "GitHub Actions",
+    ],
+    kennzahlen: [
+      { wert: "83.000", label: "Zeilen TypeScript" },
+      { wert: "1.326", label: "automatisierte Tests" },
+      { wert: "44", label: "API-Endpunkte" },
+      { wert: "41", label: "Datenmodelle" },
+      { wert: "16", label: "zeitgesteuerte Läufe" },
+      { wert: "180", label: "Fachdokumente" },
+    ],
+    hinweis:
+      "Zahlen zum System, Stand September 2026. Betriebszahlen des Auftraggebers — Umsätze, Belegung, Provisionen — stehen hier nicht.",
+    links: [{ label: "hoam-house.com", url: "https://hoam-house.com" }],
+  },
+  {
+    id: "hoam-house-website",
+    titel: "Hoam House — Website und Hauskonfigurator",
+    auftraggeber: "Hoam House",
+    rolle: "Alleinentwickler",
+    zeitraum: "2025 bis 2026",
+    aufgabe:
+      "Ein Modulkonzept erklären und das Haus an Private wie an Gewerbe verkaufen.",
+    beschreibung:
+      "Der Verkaufsauftritt des Hauses. Ein Modulkonzept lässt sich in einem Prospekt schlecht erklären, deshalb steht ein Konfigurator im Mittelpunkt: Wer ein Haus zusammenstellt, sieht bei jeder Auswahl sofort, wie sich Darstellung und Preis ändern — ohne Neuladen, ohne Zwischenschritt. Die Seite bedient zwei Zielgruppen gleichzeitig: private Interessenten, die sich ein Haus vorstellen wollen, und gewerbliche Abnehmer, die Stückzahlen und Konditionen prüfen.",
+    loesung: [
+      "Konfigurator mit sofortiger Rückmeldung auf jede Auswahl",
+      "Preisberechnung je Modulkombination",
+      "Konzept- und Modellseiten für den Verkauf an Private und Gewerbe",
+      "Auf dem Telefon genauso benutzbar wie am Rechner",
+    ],
+    technik: [
       "Next.js 15",
       "TypeScript",
       "Tailwind CSS",
@@ -34,363 +95,242 @@ const projects = [
       "Prisma",
       "PostgreSQL",
     ],
-    features: [
-      "Interactive House Configurator",
-      "Dynamic Pricing System",
-      "Property Discovery Interface",
-      "Responsive Design",
-      "Real-time Updates",
-      "Modern UI/UX",
-    ],
-    highlights: [
-      { icon: Zap, text: "High Performance Architecture" },
-      { icon: Shield, text: "Type-Safe Development" },
-      { icon: Users, text: "Exceptional User Experience" },
-    ],
     images: [
       "da-hoam_konfigurator",
       "da-hoam_landingpage",
       "da-hoam_konzeptcheck",
       "da-hoam_warumwir",
-      "da-hoam_kontakt",
     ],
-    demoUrl: "https://nest-haus.vercel.app",
-    githubUrl: "https://github.com/stenkjan/nest-haus",
-    type: "showcase",
-    priority: 1,
-  },
-  {
-    id: "ks-database",
-    title: "KS-Database",
-    subtitle: "Enterprise Product Management System",
-    category: "Full-Stack Application",
-    description:
-      "A comprehensive product database management system with advanced configuration capabilities, admin dashboard, and scalable architecture.",
-    longDescription:
-      "Designed for scalability and maintainability, this system showcases clean architecture principles, efficient database design, and intuitive user interfaces. Built with modern tools for optimal team collaboration and long-term maintenance.",
-    technologies: [
-      "React",
-      "Node.js",
-      "PostgreSQL",
-      "Express",
-      "Material-UI",
-      "RESTful APIs",
+    links: [
+      { label: "Live ansehen", url: "https://nest-haus.vercel.app" },
+      { label: "Quellcode", url: "https://github.com/stenkjan/nest-haus" },
     ],
-    features: [
-      "Product Configuration Management",
-      "Admin Dashboard",
-      "Advanced Search & Filtering",
-      "Data Visualization",
-      "User Role Management",
-      "API Integration",
-    ],
-    highlights: [
-      { icon: Database, text: "Scalable Database Design" },
-      { icon: Code2, text: "Clean Architecture" },
-      { icon: Users, text: "Team-Friendly Codebase" },
-    ],
-    images: [
-      "produktdatenbank_produkt",
-      "produktdatenbank_konfigurationen",
-      "produktdatenbank_signin",
-      "produktdatenbank_verwaltung",
-    ],
-    demoUrl: "https://produktdatenbank-298f60a21e50.herokuapp.com",
-    githubUrl: "https://github.com/stenkjan/ks-database",
-    type: "showcase",
-    priority: 2,
-  },
-  {
-    id: "event-platforms",
-    title: "Event Registration Platforms",
-    subtitle: "Streamlined Event Management Solutions",
-    category: "Web Applications",
-    description:
-      "A suite of three event registration platforms designed for small companies and teams to easily create and manage event websites.",
-    longDescription:
-      "These platforms demonstrate how small organizations can quickly deploy professional event registration systems. Each solution provides customizable registration forms, participant management, and responsive design - perfect for companies that need efficient event management without complex setup.",
-    technologies: [
-      "React",
-      "Next.js",
-      "TypeScript",
-      "Netlify",
-      "Form Handling",
-      "Responsive Design",
-    ],
-    features: [
-      "Quick Event Setup",
-      "Custom Registration Forms",
-      "Participant Management",
-      "Mobile-Friendly Design",
-      "Easy Deployment",
-      "Small Team Focused",
-    ],
-    highlights: [
-      { icon: Zap, text: "Rapid Deployment" },
-      { icon: Users, text: "Small Team Optimized" },
-      { icon: Globe, text: "Professional Results" },
-    ],
-    projects: [
-      { name: "Eule-Grngr", url: "https://github.com/stenkjan/eule-grngr" },
-      { name: "NTGL-Events", url: "https://github.com/stenkjan/ntgl-events" },
-      { name: "Eule-Event", url: "https://github.com/stenkjan/eule_event" },
-    ],
-    images: [
-      "fusspflege_registrierung",
-      "fusspflege_kundenliste",
-      "fusspflege_teilen",
-      "ntgl_eventseite",
-    ],
-    type: "summary",
-    priority: 3,
-  },
-  {
-    id: "mobile-apps",
-    title: "Mobile Applications",
-    subtitle: "Flutter & Dart Development",
-    category: "Mobile Development",
-    description:
-      "Native mobile applications built with Flutter, showcasing cross-platform development expertise and modern mobile UI/UX patterns.",
-    longDescription:
-      "Demonstrates proficiency in mobile development with Flutter and Dart, creating applications that work seamlessly across iOS and Android platforms with native performance and beautiful user interfaces.",
-    technologies: [
-      "Flutter",
-      "Dart",
-      "Mobile UI/UX",
-      "Cross-Platform",
-      "Native Performance",
-    ],
-    features: [
-      "Cross-Platform Compatibility",
-      "Native Performance",
-      "Modern UI Design",
-      "Offline Capabilities",
-      "Push Notifications",
-      "App Store Ready",
-    ],
-    highlights: [
-      { icon: Smartphone, text: "Cross-Platform Excellence" },
-      { icon: Zap, text: "Native Performance" },
-      { icon: Users, text: "Intuitive User Experience" },
-    ],
-    images: [
-      "masterarbeit_Longcovidapp",
-    ],
-    projects: [
-      { name: "COVID App", url: "https://github.com/stenkjan/covidapp" },
-      {
-        name: "Fuesse und Fusspflege CW",
-        url: "https://github.com/stenkjan/fuesse_und_fusspflege_cw",
-      },
-    ],
-    type: "summary",
-    priority: 4,
   },
 ];
 
-export default function ProjectsSection() {
-  const [activeProject, setActiveProject] = useState(projects[0].id);
+const weitere = [
+  {
+    id: "produktdatenbank",
+    titel: "Produktdatenbank",
+    zusammenfassung:
+      "Verwaltung von Produkten und Konfigurationen mit Administrationsbereich, Suche und Rechten je Benutzerrolle. Der Aufbau war von Anfang an darauf ausgelegt, dass ein anderes Team daran weiterarbeitet.",
+    technik: ["React", "Node.js", "Express", "PostgreSQL", "Material-UI"],
+    links: [
+      {
+        label: "Live ansehen",
+        url: "https://produktdatenbank-298f60a21e50.herokuapp.com",
+      },
+      { label: "Quellcode", url: "https://github.com/stenkjan/ks-database" },
+    ],
+  },
+  {
+    id: "veranstaltungen",
+    titel: "Anmeldeseiten für Veranstaltungen",
+    zusammenfassung:
+      "Drei Anmeldeseiten für Organisationen ohne eigene IT: Formular, Teilnehmerliste, Link zum Weitergeben. Mehr war nicht gefragt, und genau das war die Anforderung.",
+    technik: ["Next.js", "React", "TypeScript", "Netlify"],
+    links: [
+      { label: "Eule-Grngr", url: "https://github.com/stenkjan/eule-grngr" },
+      { label: "NTGL-Events", url: "https://github.com/stenkjan/ntgl-events" },
+      { label: "Eule-Event", url: "https://github.com/stenkjan/eule_event" },
+    ],
+  },
+  {
+    id: "mobile",
+    titel: "Mobile Anwendungen",
+    zusammenfassung:
+      "Android und iOS aus einer gemeinsamen Codebasis. Darunter eine App aus dem Umfeld meiner Masterarbeit zur Begleitung von Long-Covid-Betroffenen, mit Erfassung und Auswertung von Verlaufsdaten.",
+    technik: ["Flutter", "Dart"],
+    links: [
+      { label: "COVID-App", url: "https://github.com/stenkjan/covidapp" },
+      {
+        label: "Fuesse und Fusspflege CW",
+        url: "https://github.com/stenkjan/fuesse_und_fusspflege_cw",
+      },
+    ],
+  },
+];
 
-  const activeProjectData =
-    projects.find((p) => p.id === activeProject) || projects[0];
+function Technikzeile({ eintraege }: { eintraege: string[] }) {
+  return <p className="text-sm text-tinte-still">{eintraege.join(" · ")}</p>;
+}
 
+function Projektlinks({
+  links,
+}: {
+  links?: { label: string; url: string }[];
+}) {
+  if (!links?.length) return null;
   return (
-    <section id="projects" className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Featured Projects
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Showcasing modern web applications and mobile solutions built with
-            cutting-edge technologies. Each project demonstrates technical
-            expertise, scalable architecture, and exceptional user experience.
-          </p>
-        </div>
+    <div className="flex flex-wrap gap-x-6 gap-y-2">
+      {links.map((link) => (
+        <a
+          key={link.url}
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="textlink text-[0.9375rem]"
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+  );
+}
 
-        {/* Project Navigation */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {projects.map((project) => (
-            <button
-              key={project.id}
-              onClick={() => setActiveProject(project.id)}
-              className={`px-6 py-3 rounded-full font-medium transition-all duration-200 ${
-                activeProject === project.id
-                  ? "bg-blue-600 text-white shadow-lg"
-                  : "bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 border border-gray-200"
-              }`}
+export default function ProjectsSection() {
+  return (
+    <section
+      id="projekte"
+      className="scroll-mt-24 border-t border-linie py-20 sm:py-28"
+    >
+      <div className="mx-auto max-w-5xl px-5 sm:px-8">
+        <p className="marke mb-6">Arbeit</p>
+        <h2 className="schrift-serif text-3xl sm:text-4xl leading-snug text-tinte max-w-2xl text-balance">
+          Zwei Systeme für denselben Auftraggeber, mit zwei verschiedenen
+          Aufgaben.
+        </h2>
+        <p className="mt-6 max-w-[58ch] leading-relaxed text-tinte-leise">
+          Für Hoam House sind zwei getrennte Vorhaben entstanden: die Website,
+          die das Modulkonzept erklärt und das Haus verkauft — und das
+          Buchungssystem, das Verwaltung und Vermietung automatisiert. Sie
+          teilen sich die Marke, sonst nichts.
+        </p>
+
+        <div className="mt-16 space-y-20 sm:space-y-24">
+          {leitprojekte.map((projekt) => (
+            <article
+              key={projekt.id}
+              id={projekt.id}
+              className="scroll-mt-24 border-t border-linie-stark pt-10"
             >
-              {project.title}
-            </button>
+              <div className="grid lg:grid-cols-12 gap-x-14 gap-y-10">
+                <div className="lg:col-span-7">
+                  {projekt.auftraggeber && (
+                    <p className="marke mb-4">{projekt.auftraggeber}</p>
+                  )}
+                  <h3 className="schrift-serif text-2xl sm:text-[1.75rem] leading-snug text-tinte">
+                    {projekt.titel}
+                  </h3>
+                  <p className="mt-2 text-sm text-tinte-still">
+                    {projekt.rolle} · {projekt.zeitraum}
+                  </p>
+
+                  <p className="schrift-serif mt-6 text-lg italic leading-relaxed text-tinte">
+                    {projekt.aufgabe}
+                  </p>
+
+                  <p className="mt-5 leading-relaxed text-tinte-leise">
+                    {projekt.beschreibung}
+                  </p>
+
+                  <h4 className="marke mt-10 mb-4">Was entstanden ist</h4>
+                  <ul className="space-y-2.5">
+                    {projekt.loesung.map((punkt) => (
+                      <li key={punkt} className="flex gap-4">
+                        <span
+                          aria-hidden
+                          className="mt-[0.7em] h-px w-4 flex-shrink-0 bg-akzent"
+                        />
+                        <span className="text-[0.9375rem] leading-relaxed text-tinte">
+                          {punkt}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <h4 className="marke mt-10 mb-3">Technik</h4>
+                  <Technikzeile eintraege={projekt.technik} />
+
+                  <div className="mt-8">
+                    <Projektlinks links={projekt.links} />
+                  </div>
+                </div>
+
+                <div className="lg:col-span-5">
+                  {projekt.kennzahlen && (
+                    <div>
+                      <h4 className="marke mb-5">Größenordnung</h4>
+                      <dl className="grid grid-cols-2 border-t border-linie">
+                        {projekt.kennzahlen.map((kennzahl, index) => (
+                          <div
+                            key={kennzahl.label}
+                            className={`border-b border-linie py-5 ${
+                              index % 2 === 0
+                                ? "border-r border-linie pr-5"
+                                : "pl-5"
+                            }`}
+                          >
+                            <dt className="sr-only">{kennzahl.label}</dt>
+                            <dd>
+                              <span className="schrift-serif block text-3xl leading-none text-tinte">
+                                {kennzahl.wert}
+                              </span>
+                              <span className="mt-2 block text-[0.8125rem] leading-snug text-tinte-leise">
+                                {kennzahl.label}
+                              </span>
+                            </dd>
+                          </div>
+                        ))}
+                      </dl>
+                      {projekt.hinweis && (
+                        <p className="mt-5 text-[0.8125rem] leading-relaxed text-tinte-still">
+                          {projekt.hinweis}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {projekt.images && projekt.images.length > 0 && (
+                    <div className="space-y-4">
+                      {projekt.images.map((prefix, index) => (
+                        <div
+                          key={prefix}
+                          className="overflow-hidden border border-linie bg-papier-rein"
+                        >
+                          <BlobImage
+                            prefix={prefix}
+                            alt={`${projekt.titel} — Ansicht ${index + 1}`}
+                            className="w-full"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </article>
           ))}
         </div>
 
-        {/* Active Project Display */}
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          <div className="grid lg:grid-cols-2 gap-0">
-            {/* Project Info */}
-            <div className="p-8 lg:p-12">
-              <div className="mb-6">
-                <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full mb-4">
-                  {activeProjectData.category}
-                </span>
-                <h3 className="text-3xl font-bold text-gray-900 mb-2">
-                  {activeProjectData.title}
-                </h3>
-                <p className="text-xl text-blue-600 font-medium mb-4">
-                  {activeProjectData.subtitle}
-                </p>
-                <p className="text-gray-600 mb-6 leading-relaxed">
-                  {activeProjectData.longDescription}
-                </p>
-              </div>
-
-              {/* Key Highlights */}
-              <div className="mb-8">
-                <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                  Key Highlights
-                </h4>
-                <div className="space-y-3">
-                  {activeProjectData.highlights.map((highlight, index) => {
-                    const IconComponent = highlight.icon;
-                    return (
-                      <div key={index} className="flex items-center space-x-3">
-                        <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                          <IconComponent className="h-4 w-4 text-blue-600" />
-                        </div>
-                        <span className="text-gray-700">{highlight.text}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Technologies */}
-              <div className="mb-8">
-                <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                  Technologies Used
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {activeProjectData.technologies.map((tech, index) => (
-                    <span
-                      key={index}
-                      className="px-3 py-1 bg-gray-100 text-gray-800 text-sm rounded-full"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Features */}
-              <div className="mb-8">
-                <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                  Key Features
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {activeProjectData.features.map((feature, index) => (
-                    <div key={index} className="flex items-center space-x-2">
-                      <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                      <span className="text-gray-700 text-sm">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Project Links */}
-              <div className="flex flex-wrap gap-4">
-                {activeProjectData.demoUrl && (
-                  <a
-                    href={activeProjectData.demoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors group"
-                  >
-                    <ExternalLink className="mr-2 h-4 w-4" />
-                    <span>View Live Demo</span>
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </a>
-                )}
-                {activeProjectData.githubUrl && (
-                  <a
-                    href={activeProjectData.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center px-6 py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors"
-                  >
-                    <Github className="mr-2 h-4 w-4" />
-                    <span>View Code</span>
-                  </a>
-                )}
-                {activeProjectData.projects && (
-                  <div className="flex flex-wrap gap-2">
-                    {activeProjectData.projects.map((proj, index) => (
-                      <a
-                        key={index}
-                        href={proj.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors text-sm"
-                      >
-                        <Github className="mr-2 h-3 w-3" />
-                        <span>{proj.name}</span>
-                      </a>
-                    ))}
+        {/* Weitere Arbeiten, kompakt */}
+        <div className="mt-24">
+          <h3 className="marke mb-8">Weitere Arbeiten</h3>
+          <div className="border-t border-linie-stark">
+            {weitere.map((projekt) => (
+              <article
+                key={projekt.id}
+                className="grid gap-x-12 gap-y-4 border-b border-linie py-8 sm:grid-cols-12"
+              >
+                <div className="sm:col-span-4">
+                  <h4 className="schrift-serif text-xl text-tinte">
+                    {projekt.titel}
+                  </h4>
+                  <div className="mt-3">
+                    <Technikzeile eintraege={projekt.technik} />
                   </div>
-                )}
-              </div>
-            </div>
-
-            {/* Project Visual */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-8 lg:p-12 flex items-center justify-center">
-              <div className="w-full">
-                {activeProjectData.images && activeProjectData.images.length > 0 ? (
-                  <div className="space-y-4">
-                    {activeProjectData.images.map((imagePrefix, index) => (
-                      <div
-                        key={index}
-                        className="bg-white rounded-lg shadow-lg overflow-hidden"
-                      >
-                        <BlobImage
-                          prefix={imagePrefix}
-                          alt={`${activeProjectData.title} screenshot ${index + 1}`}
-                          className="w-full"
-                        />
-                      </div>
-                    ))}
+                </div>
+                <div className="sm:col-span-8">
+                  <p className="leading-relaxed text-tinte-leise">
+                    {projekt.zusammenfassung}
+                  </p>
+                  <div className="mt-4">
+                    <Projektlinks links={projekt.links} />
                   </div>
-                ) : (
-                  // Fallback if no images
-                  <div className="bg-white rounded-lg shadow-lg p-6 text-center">
-                    <div className="w-full h-48 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center mb-4">
-                      <Globe className="h-16 w-16 text-white" />
-                    </div>
-                    <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                      {activeProjectData.title}
-                    </h4>
-                    <p className="text-gray-600 text-sm">
-                      View live demo or source code
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
+                </div>
+              </article>
+            ))}
           </div>
-        </div>
-
-        {/* Call to Action */}
-        <div className="text-center mt-16">
-          <p className="text-lg text-gray-600 mb-6">
-            Interested in working together on your next project?
-          </p>
-          <Link
-            href="#contact"
-            className="inline-flex items-center px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors group"
-          >
-            <span>Let&apos;s Discuss Your Project</span>
-            <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-          </Link>
         </div>
       </div>
     </section>

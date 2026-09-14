@@ -1,61 +1,89 @@
+import { CONTACT, SITE_URL, SOCIAL } from "@/lib/site";
+
+/**
+ * Strukturierte Daten für Suchmaschinen.
+ *
+ * Bewusst OHNE Preisangaben: Die Sätze auf der Seite sind Ausgangswerte, und
+ * ein Ausgangswert lässt sich nicht als exakter Preis auszeichnen, ohne eine
+ * Zusage zu machen, die so nicht gemeint ist.
+ *
+ * Ausgezeichnet sind Leistungen, keine Festpreis-Pakete — die Seite richtet
+ * sich an Firmen und Agenturen, die Auftragsentwicklung vergeben.
+ */
 export default function StructuredData() {
-  const structuredData = {
+  const strukturierteDaten = {
     "@context": "https://schema.org",
     "@type": "Person",
     name: "Jan Stenk",
-    jobTitle: "Full-Stack Developer",
+    jobTitle: "Softwareentwickler",
     description:
-      "Experienced React web app developer, Next.js specialist, and Flutter developer. Expert in TypeScript, full-stack development with modern tools.",
-    url: "https://jan-stenk-portfolio.vercel.app",
-    sameAs: [
-      "https://github.com/stenkjan",
-      "https://www.linkedin.com/in/jan-stenk-46b820147/",
-    ],
+      "Softwareentwickler mit Schwerpunkt Automatisierung. Auftragsentwicklung für Agenturen, Softwarehäuser und Betriebe — Web-Anwendungen und automatisierte Abläufe, bei denen die Freigabe beim Menschen bleibt.",
+    url: SITE_URL,
+    email: `mailto:${CONTACT.email}`,
+    telephone: CONTACT.phone,
+    sameAs: [SOCIAL.github, SOCIAL.linkedin],
     knowsAbout: [
-      "React",
       "Next.js",
+      "React",
       "TypeScript",
-      "Flutter",
-      "Full-Stack Development",
-      "Web Development",
-      "Mobile App Development",
-      "JavaScript",
       "Node.js",
       "PostgreSQL",
+      "Prisma",
+      "Stripe",
+      "Flutter",
+      "Prozessautomatisierung",
+      "KI-Agenten im produktiven Betrieb",
+      "Buchungs- und Kanalsysteme",
     ],
     hasOccupation: {
       "@type": "Occupation",
-      name: "Full-Stack Developer",
+      name: "Softwareentwickler",
       occupationLocation: {
         "@type": "Country",
-        name: "Germany",
+        name: "Österreich",
       },
       skills: [
-        "React Development",
-        "Next.js Development",
-        "TypeScript Programming",
-        "Flutter Development",
-        "Full-Stack Development",
-        "Web Application Development",
-        "Mobile App Development",
+        "Entwicklung von Web-Anwendungen",
+        "Automatisierung mit Freigabe-Workflow",
+        "Anbindung externer Systeme und Schnittstellen",
+        "Betrieb und Überwachung laufender Systeme",
       ],
     },
-    makesOffer: {
-      "@type": "Offer",
-      itemOffered: {
-        "@type": "Service",
-        name: "Web Development Services",
-        description:
-          "Professional web application development, mobile app development, and full-stack solutions using modern technologies like React, Next.js, TypeScript, and Flutter.",
+    makesOffer: [
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Auftragsentwicklung",
+          description:
+            "Entwicklung von Web-Anwendungen über mehrere Wochen oder Monate, remote, mit Dokumentation und Übergabe.",
+        },
       },
-    },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Übernahme bestehender Systeme",
+          description:
+            "Eine vorhandene Anwendung übernehmen, erweitern und im Betrieb halten.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Automatisierung und Integration",
+          description:
+            "Abläufe zwischen Systemen automatisieren, mit menschlicher Freigabe und nachvollziehbarer Spur.",
+        },
+      },
+    ],
   };
 
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(strukturierteDaten) }}
     />
   );
 }
-

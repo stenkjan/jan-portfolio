@@ -39,18 +39,18 @@ export default function OptimizedImage({
     // For PDFs, show a preview placeholder with link
     return (
       <div
-        className={`relative ${className} bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center`}
+        className={`relative ${className} bg-papier-tief flex items-center justify-center`}
       >
         <div className="text-center p-8">
-          <ImageIcon className="h-16 w-16 text-blue-600 mx-auto mb-4" />
-          <p className="text-sm text-gray-600 mb-2">PDF Screenshot</p>
+          <ImageIcon className="h-16 w-16 text-tinte-still mx-auto mb-4" />
+          <p className="text-sm text-tinte-leise mb-2">Ansicht als PDF</p>
           <a
             href={src}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 hover:text-blue-700 font-medium text-sm underline"
+            className="text-tinte-still hover:text-akzent font-medium text-sm underline"
           >
-            View Full Screenshot →
+            Vollständige Ansicht öffnen →
           </a>
         </div>
       </div>
@@ -60,11 +60,11 @@ export default function OptimizedImage({
   if (hasError) {
     return (
       <div
-        className={`relative ${className} bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center`}
+        className={`relative ${className} bg-papier-tief flex items-center justify-center`}
       >
         <div className="text-center p-8">
-          <ImageIcon className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-          <p className="text-sm text-gray-500">Image not available</p>
+          <ImageIcon className="h-16 w-16 text-tinte-still mx-auto mb-4" />
+          <p className="text-sm text-tinte-still">Ansicht nicht verfügbar</p>
         </div>
       </div>
     );
@@ -74,8 +74,8 @@ export default function OptimizedImage({
     <div className={`relative ${className} overflow-hidden`}>
       {/* Loading skeleton */}
       {isLoading && (
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 animate-pulse flex items-center justify-center">
-          <div className="text-blue-600">
+        <div className="absolute inset-0 bg-papier-tief animate-pulse flex items-center justify-center">
+          <div className="text-tinte-still">
             <ImageIcon className="h-12 w-12 animate-pulse" />
           </div>
         </div>
