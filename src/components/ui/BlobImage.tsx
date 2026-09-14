@@ -39,18 +39,18 @@ export default function BlobImage({ prefix, alt, className = "" }: BlobImageProp
 
   if (isLoading) {
     return (
-      <div className={`aspect-video bg-gradient-to-br from-blue-50 to-indigo-50 animate-pulse flex items-center justify-center ${className}`}>
-        <ImageIcon className="h-12 w-12 text-blue-600 animate-pulse" />
+      <div className={`aspect-video bg-papier-tief animate-pulse flex items-center justify-center ${className}`}>
+        <ImageIcon className="h-12 w-12 text-tinte-still animate-pulse" />
       </div>
     );
   }
 
   if (error || !imageUrl) {
     return (
-      <div className={`aspect-video bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center ${className}`}>
+      <div className={`aspect-video bg-papier-tief flex items-center justify-center ${className}`}>
         <div className="text-center">
-          <ImageIcon className="h-16 w-16 text-gray-400 mx-auto mb-2" />
-          <p className="text-sm text-gray-500">Image not available</p>
+          <ImageIcon className="h-16 w-16 text-tinte-still mx-auto mb-2" />
+          <p className="text-sm text-tinte-still">Ansicht nicht verfügbar</p>
         </div>
       </div>
     );

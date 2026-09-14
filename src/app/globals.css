@@ -1,26 +1,135 @@
 @import "tailwindcss";
 
+/**
+ * Farbwelt und Typografie der Seite.
+ *
+ * Die Seite ist ausdrücklich hell. Vorher kippte der Body im Dunkelmodus des
+ * Betriebssystems auf Schwarz, während alle Abschnitte weiß blieben — jeder
+ * Text ohne eigene Farbe wäre dort unlesbar geworden.
+ *
+ * Es gibt genau eine Akzentfarbe: ein entsättigtes Blaugrau. Sie trägt Links,
+ * den primären Button und sonst nichts. Alles Übrige entsteht aus Tinte,
+ * Papier und Haarlinien. Farbe kommt auf dieser Seite aus den Screenshots der
+ * Projekte, nicht aus der Gestaltung.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+
+  /* Grundflächen */
+  --papier: #fbfbfa;
+  --papier-tief: #f4f4f2;
+  --papier-rein: #ffffff;
+
+  /* Schrift */
+  --tinte: #15191c;
+  --tinte-leise: #5a6469;
+  --tinte-still: #8b9399;
+
+  /* Der einzige Akzent */
+  --akzent: #2e4756;
+  --akzent-hell: #3d5d70;
+  --akzent-lasur: #eef1f3;
+
+  /* Dunkle Flächen */
+  --dunkel: #1a2328;
+  --dunkel-schrift: #c9d1d6;
+
+  /* Trennung */
+  --linie: #e4e5e2;
+  --linie-stark: #cfd1cd;
+
+  --background: var(--papier);
+  --foreground: var(--tinte);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  --color-papier: var(--papier);
+  --color-papier-tief: var(--papier-tief);
+  --color-papier-rein: var(--papier-rein);
+  --color-tinte: var(--tinte);
+  --color-tinte-leise: var(--tinte-leise);
+  --color-tinte-still: var(--tinte-still);
+  --color-akzent: var(--akzent);
+  --color-akzent-hell: var(--akzent-hell);
+  --color-akzent-lasur: var(--akzent-lasur);
+  --color-dunkel: var(--dunkel);
+  --color-dunkel-schrift: var(--dunkel-schrift);
+  --color-linie: var(--linie);
+  --color-linie-stark: var(--linie-stark);
+
   --font-sans: var(--font-geist-sans);
+  --font-serif: var(--font-newsreader);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  /* Platz für die fixierte Kopfzeile beim Sprung auf einen Anker. */
+  scroll-padding-top: 5rem;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--papier);
+  color: var(--tinte);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+/**
+ * Überschriften laufen in einer Serifenschrift. Bei einer Palette fast ohne
+ * Farbe muss die Typografie den Charakter tragen — sonst bleibt nur graues
+ * Standardlayout übrig.
+ */
+.schrift-serif {
+  font-family: var(--font-newsreader), ui-serif, Georgia, "Times New Roman",
+    serif;
+  font-optical-sizing: auto;
+}
+
+/* Die Kapitälchen-Marke über einem Abschnitt. */
+.marke {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tinte-still);
+}
+
+/* Textlink im Fließtext: Unterstreichung mit Abstand, kein Farbsprung. */
+.textlink {
+  color: var(--akzent);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--linie-stark);
+  transition: text-decoration-color 150ms ease;
+}
+.textlink:hover {
+  text-decoration-color: var(--akzent);
+}
+
+/* Sichtbarer Fokus, ohne den Rest der Gestaltung zu stören. */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--akzent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Newsreader } from "next/font/google";
 import "./globals.css";
 import StructuredData from "@/components/ui/StructuredData";
+import { SITE_URL } from "@/lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,24 +14,43 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+/**
+ * Serifenschrift für Überschriften. Die Palette der Seite ist fast farblos —
+ * den Charakter muss die Typografie tragen, nicht ein bunter Akzent.
+ */
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+const beschreibung =
+  "Softwareentwickler mit Schwerpunkt Automatisierung. Ich baue Web-Anwendungen und automatisierte Abläufe, bei denen die Freigabe beim Menschen bleibt — und übergebe sie so, dass ein anderes Team sie weiterführen kann. Verfügbar für Auftragsentwicklung, remote.";
+
 export const metadata: Metadata = {
-  title: "Jan Stenk - React & Next.js Developer | Full-Stack TypeScript Expert",
-  description:
-    "Experienced React web app developer, Next.js specialist, and Flutter developer. Expert in TypeScript, full-stack development with modern tools. Creating scalable web solutions and mobile applications.",
+  metadataBase: new URL(SITE_URL),
+  title: "Jan Stenk – Softwareentwickler & Automatisierung",
+  description: beschreibung,
   keywords: [
-    "React web app developer",
-    "Next.js developer",
-    "Flutter developer",
-    "Full stack developer",
-    "TypeScript developer",
-    "Web development",
-    "Mobile app development",
-    "Frontend developer",
-    "Backend developer",
+    "Softwareentwickler Automatisierung",
+    "Freelance Entwickler Österreich",
+    "Next.js Entwickler",
+    "TypeScript Entwickler",
+    "Auftragsentwicklung remote",
+    "Prozessautomatisierung mit Freigabe",
+    "KI-Agenten produktiv betreiben",
+    "Buchungssystem Entwicklung",
+    "Full-Stack Entwickler Graz",
+    "Entwickler für Agenturen",
   ],
   authors: [{ name: "Jan Stenk" }],
   creator: "Jan Stenk",
   publisher: "Jan Stenk",
+  alternates: {
+    canonical: "/",
+  },
   robots: {
     index: true,
     follow: true,
@@ -44,18 +64,16 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "en_US",
-    url: "https://jan-stenk-portfolio.vercel.app",
-    title: "Jan Stenk - React & Next.js Developer",
-    description:
-      "Expert React web app developer and Next.js specialist. Creating modern, scalable web solutions with TypeScript.",
-    siteName: "Jan Stenk Portfolio",
+    locale: "de_AT",
+    url: SITE_URL,
+    title: "Jan Stenk – Softwareentwickler & Automatisierung",
+    description: beschreibung,
+    siteName: "Jan Stenk",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jan Stenk - React & Next.js Developer",
-    description:
-      "Expert React web app developer and Next.js specialist. Creating modern, scalable web solutions.",
+    title: "Jan Stenk – Softwareentwickler & Automatisierung",
+    description: beschreibung,
   },
 };
 
@@ -65,12 +83,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="de">
       <head>
         <StructuredData />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${newsreader.variable} antialiased`}
       >
         {children}
       </body>
