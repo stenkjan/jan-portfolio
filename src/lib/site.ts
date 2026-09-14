@@ -36,6 +36,15 @@ export const RATES = {
   dayRate: "250 €",
   availability: "Ab Anfang Oktober 2026",
   capacity: "25 Stunden pro Woche",
+  /**
+   * Die Sätze sind Einstiegssätze und ab 01.01.2027 auf 60 €/Stunde angehoben
+   * (entschieden 14.09.2026). Die Befristung steht hier ausdrücklich auf der
+   * Seite: Ein Satz, der unbefristet veröffentlicht ist, lässt sich gegenüber
+   * Bestandskunden später kaum heben.
+   * TODO: Ab 01.01.2027 hourly auf 60 € setzen und dayRate/halfDay nach
+   * derselben Logik neu ableiten (Tag ~430 €, Halbtag ~240 €).
+   */
+  entryNote: "Einstiegssätze für Beauftragungen bis Ende 2026.",
 } as const;
 
 /** Wie die Zusammenarbeit organisatorisch läuft. */

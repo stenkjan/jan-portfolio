@@ -77,6 +77,12 @@ export default function KonditionenSection() {
               </div>
             </dl>
 
+            {RATES.entryNote && (
+              <p className="mt-4 text-[0.8125rem] leading-relaxed text-tinte-still">
+                {RATES.entryNote}
+              </p>
+            )}
+
             <h3 className="marke mt-12 mb-6">Rahmen</h3>
             <ul className="space-y-4">
               {Object.values(ZUSAMMENARBEIT).map((punkt) => (
