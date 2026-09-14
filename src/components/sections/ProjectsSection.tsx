@@ -151,8 +151,13 @@ const weitere = [
   },
 ];
 
-function Technikzeile({ eintraege }: { eintraege: string[] }) {
-  return <p className="text-sm text-tinte-still">{eintraege.join(" · ")}</p>;
+/**
+ * Sichtbarkeit und Abstand liegen in der Komponente, nicht am Aufrufort.
+ * Sonst bleibt bei leerer Liste der Aussenabstand als Loch stehen.
+ */
+function Technikzeile({ eintraege }: { eintraege?: string[] }) {
+  if (!eintraege?.length) return null;
+  return <p className="mt-3 text-sm text-tinte-still">{eintraege.join(" · ")}</p>;
 }
 
 function Projektlinks({
@@ -162,7 +167,7 @@ function Projektlinks({
 }) {
   if (!links?.length) return null;
   return (
-    <div className="flex flex-wrap gap-x-6 gap-y-2">
+    <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
       {links.map((link) => (
         <a
           key={link.url}
@@ -178,11 +183,83 @@ function Projektlinks({
   );
 }
 
+/**
+ * Das Zahlenraster. Die Leerpruefung sitzt wie bei Projektlinks in der
+ * Komponente, damit der Aufrufort sie nicht falsch schreiben kann — ein leeres
+ * Array ist truthy und haette sonst eine Ueberschrift ueber einer leeren
+ * Haarlinie ergeben.
+ *
+ * `odd:` trifft das erste, dritte, fuenfte Kind und ersetzt damit die
+ * Index-Rechnung. Label und Wert stehen je einmal im DOM: `flex-col-reverse`
+ * dreht die Lesereihenfolge (dt vor dd) in die gewuenschte Darstellung
+ * (Wert ueber Label), ohne den Text fuer Screenreader zu verdoppeln.
+ */
+function Kennzahlen({
+  eintraege,
+  hinweis,
+}: {
+  eintraege?: { wert: string; label: string }[];
+  hinweis?: string;
+}) {
+  if (!eintraege?.length) return null;
+  return (
+    <div>
+      <h4 className="marke mb-5">Größenordnung</h4>
+      <dl className="grid grid-cols-2 border-t border-linie">
+        {eintraege.map((kennzahl) => (
+          <div
+            key={kennzahl.label}
+            className="flex flex-col-reverse gap-2 border-b border-linie py-5 odd:border-r odd:border-linie odd:pr-5 even:pl-5"
+          >
+            <dt className="text-[0.8125rem] leading-snug text-tinte-leise">
+              {kennzahl.label}
+            </dt>
+            <dd className="schrift-serif text-3xl leading-none text-tinte">
+              {kennzahl.wert}
+            </dd>
+          </div>
+        ))}
+      </dl>
+      {hinweis && (
+        <p className="mt-5 text-[0.8125rem] leading-relaxed text-tinte-still">
+          {hinweis}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function Projektbilder({
+  prefixe,
+  titel,
+}: {
+  prefixe?: string[];
+  titel: string;
+}) {
+  if (!prefixe?.length) return null;
+  return (
+    <div className="space-y-4">
+      {prefixe.map((prefix, index) => (
+        <div
+          key={prefix}
+          className="overflow-hidden border border-linie bg-papier-rein"
+        >
+          <BlobImage
+            prefix={prefix}
+            alt={`${titel} — Ansicht ${index + 1}`}
+            className="w-full"
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function ProjectsSection() {
   return (
     <section
       id="projekte"
-      className="scroll-mt-24 border-t border-linie py-20 sm:py-28"
+      className="border-t border-linie py-20 sm:py-28"
     >
       <div className="mx-auto max-w-5xl px-5 sm:px-8">
         <p className="marke mb-6">Arbeit</p>
@@ -202,7 +279,7 @@ export default function ProjectsSection() {
             <article
               key={projekt.id}
               id={projekt.id}
-              className="scroll-mt-24 border-t border-linie-stark pt-10"
+              className="border-t border-linie-stark pt-10"
             >
               <div className="grid lg:grid-cols-12 gap-x-14 gap-y-10">
                 <div className="lg:col-span-7">
@@ -216,7 +293,7 @@ export default function ProjectsSection() {
                     {projekt.rolle} · {projekt.zeitraum}
                   </p>
 
-                  <p className="schrift-serif mt-6 text-lg italic leading-relaxed text-tinte">
+                  <p className="schrift-serif-kursiv mt-6 text-lg leading-relaxed text-tinte">
                     {projekt.aufgabe}
                   </p>
 
@@ -239,64 +316,20 @@ export default function ProjectsSection() {
                     ))}
                   </ul>
 
-                  <h4 className="marke mt-10 mb-3">Technik</h4>
+                  <h4 className="marke mt-10">Technik</h4>
                   <Technikzeile eintraege={projekt.technik} />
-
-                  <div className="mt-8">
-                    <Projektlinks links={projekt.links} />
-                  </div>
+                  <Projektlinks links={projekt.links} />
                 </div>
 
                 <div className="lg:col-span-5">
-                  {projekt.kennzahlen && (
-                    <div>
-                      <h4 className="marke mb-5">Größenordnung</h4>
-                      <dl className="grid grid-cols-2 border-t border-linie">
-                        {projekt.kennzahlen.map((kennzahl, index) => (
-                          <div
-                            key={kennzahl.label}
-                            className={`border-b border-linie py-5 ${
-                              index % 2 === 0
-                                ? "border-r border-linie pr-5"
-                                : "pl-5"
-                            }`}
-                          >
-                            <dt className="sr-only">{kennzahl.label}</dt>
-                            <dd>
-                              <span className="schrift-serif block text-3xl leading-none text-tinte">
-                                {kennzahl.wert}
-                              </span>
-                              <span className="mt-2 block text-[0.8125rem] leading-snug text-tinte-leise">
-                                {kennzahl.label}
-                              </span>
-                            </dd>
-                          </div>
-                        ))}
-                      </dl>
-                      {projekt.hinweis && (
-                        <p className="mt-5 text-[0.8125rem] leading-relaxed text-tinte-still">
-                          {projekt.hinweis}
-                        </p>
-                      )}
-                    </div>
-                  )}
-
-                  {projekt.images && projekt.images.length > 0 && (
-                    <div className="space-y-4">
-                      {projekt.images.map((prefix, index) => (
-                        <div
-                          key={prefix}
-                          className="overflow-hidden border border-linie bg-papier-rein"
-                        >
-                          <BlobImage
-                            prefix={prefix}
-                            alt={`${projekt.titel} — Ansicht ${index + 1}`}
-                            className="w-full"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  <Kennzahlen
+                    eintraege={projekt.kennzahlen}
+                    hinweis={projekt.hinweis}
+                  />
+                  <Projektbilder
+                    prefixe={projekt.images}
+                    titel={projekt.titel}
+                  />
                 </div>
               </div>
             </article>
@@ -316,17 +349,13 @@ export default function ProjectsSection() {
                   <h4 className="schrift-serif text-xl text-tinte">
                     {projekt.titel}
                   </h4>
-                  <div className="mt-3">
-                    <Technikzeile eintraege={projekt.technik} />
-                  </div>
+                  <Technikzeile eintraege={projekt.technik} />
                 </div>
                 <div className="sm:col-span-8">
                   <p className="leading-relaxed text-tinte-leise">
                     {projekt.zusammenfassung}
                   </p>
-                  <div className="mt-4">
-                    <Projektlinks links={projekt.links} />
-                  </div>
+                  <Projektlinks links={projekt.links} />
                 </div>
               </article>
             ))}

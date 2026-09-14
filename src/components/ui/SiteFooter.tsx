@@ -19,7 +19,7 @@ export default function SiteFooter() {
           </div>
 
           <nav className="flex flex-col gap-2 text-[0.9375rem] sm:items-end">
-            <a href={`mailto:${CONTACT.email}`} className="textlink">
+            <a href={CONTACT.emailHref} className="textlink">
               {CONTACT.email}
             </a>
             <a

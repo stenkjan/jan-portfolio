@@ -61,13 +61,13 @@ export default function DatenschutzSeite() {
             {IMPRESSUM.strasse}, {IMPRESSUM.ort}, {IMPRESSUM.land}
             <br />
             <a
-              href={`mailto:${CONTACT.email}`}
-              className="text-akzent hover:underline"
+              href={CONTACT.emailHref}
+              className="textlink"
             >
               {CONTACT.email}
             </a>
             {" · "}
-            <a href={CONTACT.phoneHref} className="text-akzent hover:underline">
+            <a href={CONTACT.phoneHref} className="textlink">
               {CONTACT.phone}
             </a>
           </p>
@@ -177,7 +177,7 @@ export default function DatenschutzSeite() {
             40–42, 1030 Wien,{" "}
             <a
               href="mailto:dsb@dsb.gv.at"
-              className="text-akzent hover:underline"
+              className="textlink"
             >
               dsb@dsb.gv.at
             </a>
@@ -186,7 +186,7 @@ export default function DatenschutzSeite() {
               href="https://www.dsb.gv.at"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-akzent hover:underline"
+              className="textlink"
             >
               dsb.gv.at
             </a>
@@ -203,7 +203,7 @@ export default function DatenschutzSeite() {
 
         <p className="mt-14 text-sm text-tinte-still">
           Siehe auch das{" "}
-          <Link href="/impressum" className="text-akzent hover:underline">
+          <Link href="/impressum" className="textlink">
             Impressum
           </Link>
           .

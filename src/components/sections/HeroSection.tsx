@@ -81,9 +81,15 @@ export default function HeroSection() {
             {schwerpunkte.map((schwerpunkt, index) => (
               <div
                 key={schwerpunkt.titel}
+                /**
+                 * Vorher standen `sm:pr-10` und `sm:pr-0` gleichzeitig im
+                 * selben Breakpoint — welche gewinnt, entschied allein die
+                 * Reihenfolge in Tailwinds Ausgabe. Jetzt setzt die Basis das
+                 * Padding, die Bedingung nur noch Trennlinie und Einzug.
+                 */
                 className={`py-8 sm:py-10 sm:pr-10 ${
                   index > 0
-                    ? "border-t border-linie sm:border-t-0 sm:border-l sm:border-linie sm:pl-10 sm:pr-0 lg:pr-10"
+                    ? "border-t border-linie sm:border-t-0 sm:border-l sm:pl-10"
                     : ""
                 }`}
               >

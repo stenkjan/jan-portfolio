@@ -6,8 +6,9 @@ import { RATES, ZUSAMMENARBEIT, CONTACT } from "@/lib/site";
  * Was eine Agentur oder ein Softwarehaus vor dem ersten Gespräch wissen will:
  * Satz, Verfügbarkeit, Vertragsform — und wofür ich nicht der Richtige bin.
  *
- * Leere Felder werden ausgeblendet statt gefüllt. Stundensatz und Halbtag sind
- * bestätigt; Tagessatz, Starttermin und Kapazität stehen in site.ts noch offen.
+ * Leere Felder werden ausgeblendet statt gefüllt — zum 01.01.2027 fällt so der
+ * Hinweis auf die Einstiegssätze von selbst weg, sobald `entryNote` geleert
+ * ist. Alle Werte stammen aus site.ts, keiner steht hier im Markup.
  */
 const passt = [
   "Auftragsentwicklung über mehrere Wochen oder Monate, remote",
@@ -40,7 +41,7 @@ export default function KonditionenSection() {
   return (
     <section
       id="konditionen"
-      className="scroll-mt-24 border-t border-linie bg-papier-tief py-20 sm:py-28"
+      className="border-t border-linie bg-papier-tief py-20 sm:py-28"
     >
       <div className="mx-auto max-w-5xl px-5 sm:px-8">
         <p className="marke mb-6">Konditionen</p>

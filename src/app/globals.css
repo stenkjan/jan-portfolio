@@ -30,22 +30,12 @@
   --akzent-hell: #3d5d70;
   --akzent-lasur: #eef1f3;
 
-  /* Dunkle Flächen */
-  --dunkel: #1a2328;
-  --dunkel-schrift: #c9d1d6;
-
   /* Trennung */
   --linie: #e4e5e2;
   --linie-stark: #cfd1cd;
-
-  --background: var(--papier);
-  --foreground: var(--tinte);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-
   --color-papier: var(--papier);
   --color-papier-tief: var(--papier-tief);
   --color-papier-rein: var(--papier-rein);
@@ -55,19 +45,21 @@
   --color-akzent: var(--akzent);
   --color-akzent-hell: var(--akzent-hell);
   --color-akzent-lasur: var(--akzent-lasur);
-  --color-dunkel: var(--dunkel);
-  --color-dunkel-schrift: var(--dunkel-schrift);
   --color-linie: var(--linie);
   --color-linie-stark: var(--linie-stark);
 
   --font-sans: var(--font-geist-sans);
-  --font-serif: var(--font-newsreader);
-  --font-mono: var(--font-geist-mono);
 }
 
 html {
   scroll-behavior: smooth;
-  /* Platz für die fixierte Kopfzeile beim Sprung auf einen Anker. */
+  /**
+   * Platz für die fixierte Kopfzeile beim Sprung auf einen Anker. Das ist die
+   * EINZIGE Stelle, die den Header-Offset kennt — die Abschnitte tragen kein
+   * eigenes `scroll-mt-*` mehr. Beides zusammen addiert sich nämlich
+   * (padding am Scrollport, margin am Ziel) und der Sprung landete 11rem
+   * statt 5rem über der Überschrift.
+   */
   scroll-padding-top: 5rem;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -90,6 +82,17 @@ body {
 .schrift-serif {
   font-family: var(--font-newsreader), ui-serif, Georgia, "Times New Roman",
     serif;
+  font-optical-sizing: auto;
+}
+
+/**
+ * Kursive Serife. Eigene Klasse, weil die kursive Schriftdatei bewusst
+ * nachlädt statt im Preload zu stehen — siehe layout.tsx.
+ */
+.schrift-serif-kursiv {
+  font-family: var(--font-newsreader-kursiv), ui-serif, Georgia,
+    "Times New Roman", serif;
+  font-style: italic;
   font-optical-sizing: auto;
 }
 

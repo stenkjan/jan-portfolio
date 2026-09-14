@@ -61,10 +61,10 @@ export default function ContactSection() {
       formular.zeitrahmen ? `Zeitrahmen: ${formular.zeitrahmen}` : null,
       "",
       formular.nachricht,
-    ].filter((zeile): zeile is string => zeile !== null);
+    ].filter((zeile) => zeile !== null);
 
     const mailto =
-      `mailto:${CONTACT.email}` +
+      CONTACT.emailHref +
       `?subject=${encodeURIComponent(betreff)}` +
       `&body=${encodeURIComponent(zeilen.join("\n"))}`;
 
@@ -80,7 +80,7 @@ export default function ContactSection() {
   return (
     <section
       id="kontakt"
-      className="scroll-mt-24 border-t border-linie py-20 sm:py-28"
+      className="border-t border-linie py-20 sm:py-28"
     >
       <div className="mx-auto max-w-5xl px-5 sm:px-8">
         <p className="marke mb-6">Kontakt</p>
@@ -102,7 +102,7 @@ export default function ContactSection() {
                 <dt className="text-[0.8125rem] text-tinte-still">E-Mail</dt>
                 <dd className="mt-1">
                   <a
-                    href={`mailto:${CONTACT.email}`}
+                    href={CONTACT.emailHref}
                     className="textlink break-words"
                   >
                     {CONTACT.email}
@@ -288,7 +288,7 @@ export default function ContactSection() {
                 >
                   Ihre Angaben wurden an Ihr E-Mail-Programm übergeben. Öffnet
                   sich kein Fenster, schreiben Sie bitte direkt an{" "}
-                  <a href={`mailto:${CONTACT.email}`} className="textlink">
+                  <a href={CONTACT.emailHref} className="textlink">
                     {CONTACT.email}
                   </a>
                   .

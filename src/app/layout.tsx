@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Newsreader } from "next/font/google";
+import { Geist, Newsreader } from "next/font/google";
 import "./globals.css";
 import StructuredData from "@/components/ui/StructuredData";
 import { SITE_URL } from "@/lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
@@ -21,8 +16,22 @@ const geistMono = Geist_Mono({
 const newsreader = Newsreader({
   variable: "--font-newsreader",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
+  weight: ["400"],
+  display: "swap",
+});
+
+/**
+ * Die Kursive steht auf genau zwei Zeilen (die Aufgabenzeile der beiden
+ * Leitprojekte), ist aber die größte der Schriftdateien. Deshalb ein eigenes
+ * Objekt mit `preload: false`: Sie lädt nach, statt den kritischen Pfad zu
+ * blockieren.
+ */
+const newsreaderKursiv = Newsreader({
+  variable: "--font-newsreader-kursiv",
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["italic"],
+  preload: false,
   display: "swap",
 });
 
@@ -88,7 +97,7 @@ export default function RootLayout({
         <StructuredData />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${newsreader.variable} antialiased`}
+        className={`${geistSans.variable} ${newsreader.variable} ${newsreaderKursiv.variable} antialiased`}
       >
         {children}
       </body>

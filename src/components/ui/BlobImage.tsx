@@ -18,7 +18,7 @@ export default function BlobImage({ prefix, alt, className = "" }: BlobImageProp
   useEffect(() => {
     async function fetchImage() {
       try {
-        const response = await fetch(`/api/blob-images?prefix=${prefix}`);
+        const response = await fetch(`/api/blob-images?prefix=${encodeURIComponent(prefix)}`);
         const data = await response.json();
         
         if (data.images && data.images.length > 0) {

@@ -1,6 +1,11 @@
 import { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 
+/**
+ * Nur echte Seiten. Fragment-URLs (`/#kontakt`) sind aus Crawler-Sicht
+ * dieselbe Adresse wie `/` — sie standen hier als vier zusätzliche Einträge
+ * und täuschten eine Struktur vor, die es nicht gibt.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
   const stand = new Date();
 
@@ -10,30 +15,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: stand,
       changeFrequency: "monthly",
       priority: 1,
-    },
-    {
-      url: `${SITE_URL}/#konditionen`,
-      lastModified: stand,
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    {
-      url: `${SITE_URL}/#projekte`,
-      lastModified: stand,
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    {
-      url: `${SITE_URL}/#arbeitsweise`,
-      lastModified: stand,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${SITE_URL}/#kontakt`,
-      lastModified: stand,
-      changeFrequency: "monthly",
-      priority: 0.8,
     },
     {
       url: `${SITE_URL}/impressum`,

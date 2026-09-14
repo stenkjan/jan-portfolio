@@ -52,13 +52,13 @@ export default function ImpressumSeite() {
 
           <Zeile label="Kontakt">
             <a
-              href={`mailto:${CONTACT.email}`}
-              className="text-akzent hover:underline"
+              href={CONTACT.emailHref}
+              className="textlink"
             >
               {CONTACT.email}
             </a>
             <br />
-            <a href={CONTACT.phoneHref} className="text-akzent hover:underline">
+            <a href={CONTACT.phoneHref} className="textlink">
               {CONTACT.phone}
             </a>
           </Zeile>
@@ -84,7 +84,7 @@ export default function ImpressumSeite() {
               href="https://www.ris.bka.gv.at"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-akzent hover:underline"
+              className="textlink"
             >
               ris.bka.gv.at
             </a>
@@ -160,7 +160,7 @@ export default function ImpressumSeite() {
 
         <p className="mt-14 text-sm text-tinte-still">
           Zum Datenschutz siehe die{" "}
-          <Link href="/datenschutz" className="text-akzent hover:underline">
+          <Link href="/datenschutz" className="textlink">
             Datenschutzerklärung
           </Link>
           .

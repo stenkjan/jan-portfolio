@@ -19,7 +19,7 @@ export default function StructuredData() {
     description:
       "Softwareentwickler mit Schwerpunkt Automatisierung. Auftragsentwicklung für Agenturen, Softwarehäuser und Betriebe — Web-Anwendungen und automatisierte Abläufe, bei denen die Freigabe beim Menschen bleibt.",
     url: SITE_URL,
-    email: `mailto:${CONTACT.email}`,
+    email: CONTACT.emailHref,
     telephone: CONTACT.phone,
     sameAs: [SOCIAL.github, SOCIAL.linkedin],
     knowsAbout: [

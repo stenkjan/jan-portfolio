@@ -9,6 +9,8 @@ export const SITE_URL = "https://jan-stenk-portfolio.vercel.app";
 
 export const CONTACT = {
   email: "m.janstenk@gmail.com",
+  /* Fertiges href wie bei phoneHref — das mailto: stand vorher an sieben Stellen im Markup. */
+  emailHref: "mailto:m.janstenk@gmail.com",
   phone: "+43 660 5649683",
   phoneHref: "tel:+436605649683",
   location: "Graz, Österreich",
@@ -23,6 +25,11 @@ export const SOCIAL = {
 /**
  * Konditionen. Angepasst von Jan am 14.09.2026.
  *
+ * Bewusst `Konditionen` statt `as const`: Mit `as const` kennt TypeScript jeden
+ * Wert als nicht-leeres Literal, und die Leerprüfungen in den Abschnitten wären
+ * statisch immer wahr — also toter Code. Die Felder sollen aber leer sein
+ * dürfen (entryNote fällt zum 01.01.2027 weg), deshalb der weitere Typ.
+ *
  * Der Tagessatz ist der Ausgangswert; Stunde und Halbtag liegen bewusst leicht
  * darüber, damit ein gebuchter Tag günstiger ist als derselbe Umfang in
  * Einzelstunden. 250 / 8 = 31,25 €, aufgerundet auf 35 €.
@@ -30,7 +37,17 @@ export const SOCIAL = {
  * ACHTUNG: Die frühere Fassung vom 10.09.2026 nannte 60 €/Stunde und 250 € für
  * den HALBTAG. Die Werte hier sind die neueren und lösen jene ab.
  */
-export const RATES = {
+type Konditionen = {
+  hourly: string;
+  halfDay: string;
+  dayRate: string;
+  /** Leer heißt: Zeile wird nicht angezeigt. */
+  availability: string;
+  capacity: string;
+  entryNote: string;
+};
+
+export const RATES: Konditionen = {
   hourly: "35 €",
   halfDay: "140 €",
   dayRate: "250 €",
@@ -45,7 +62,7 @@ export const RATES = {
    * derselben Logik neu ableiten (Tag ~430 €, Halbtag ~240 €).
    */
   entryNote: "Einstiegssätze für Beauftragungen bis Ende 2026.",
-} as const;
+};
 
 /** Wie die Zusammenarbeit organisatorisch läuft. */
 export const ZUSAMMENARBEIT = {
@@ -81,7 +98,7 @@ export const IMPRESSUM = {
  * ein leerer Rahmen sieht schlechter aus als kein Bild.
  * TODO: Foto unter public/ ablegen und den Pfad hier eintragen.
  */
-export const PORTRAIT = {
+export const PORTRAIT: { src: string; alt: string } = {
   src: "",
   alt: "Jan Stenk",
-} as const;
+};

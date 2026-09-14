@@ -29,19 +29,37 @@ const prinzipien = [
   },
 ];
 
+/**
+ * Der Satz unter dieser Liste sagt zu, dass hier nur steht, was in den
+ * Projekten oben tatsächlich vorkommt. Die Liste hielt das nicht ein: Express,
+ * Material-UI, Netlify und Zustand standen in den Projektdaten, aber nicht
+ * hier. Auf einer Seite mit dem Grundsatz "Gemessen statt zugesagt" ist das
+ * die Stelle, an der es am meisten kostet — deshalb ergänzt.
+ *
+ * Wer hier etwas hinzufügt, prüft es gegen die `technik`-Felder in
+ * ProjectsSection.tsx. Nichts aufnehmen, was dort nicht vorkommt.
+ */
 const technik = [
   {
     bereich: "Web",
-    eintraege: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+    eintraege: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Zustand",
+      "Material-UI",
+    ],
   },
   {
     bereich: "Daten",
-    eintraege: ["PostgreSQL", "Prisma", "Neon", "Node.js"],
+    eintraege: ["PostgreSQL", "Prisma", "Neon", "Node.js", "Express"],
   },
   {
     bereich: "Betrieb",
     eintraege: [
       "Vercel",
+      "Netlify",
       "GitHub Actions",
       "zeitgesteuerte Läufe",
       "Überwachung",
@@ -66,7 +84,7 @@ export default function AboutSection() {
   return (
     <section
       id="arbeitsweise"
-      className="scroll-mt-24 border-t border-linie py-20 sm:py-28"
+      className="border-t border-linie py-20 sm:py-28"
     >
       <div className="mx-auto max-w-5xl px-5 sm:px-8">
         <p className="marke mb-6">Arbeitsweise</p>
